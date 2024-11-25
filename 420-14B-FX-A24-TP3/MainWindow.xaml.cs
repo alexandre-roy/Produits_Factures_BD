@@ -14,12 +14,12 @@ using System.Windows.Shapes;
 
 namespace _420_14B_FX_A24_TP3
 {
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region INITIALISATION
 
         public MainWindow()
         {
@@ -27,10 +27,16 @@ namespace _420_14B_FX_A24_TP3
 
         }
 
+        #endregion
+
+        #region ACTIONS_FORMULAIRE
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
 
         }
+
+        #endregion
     }
 }

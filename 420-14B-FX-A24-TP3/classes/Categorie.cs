@@ -1,9 +1,5 @@
-﻿
-
-using System;
+﻿using System;
 using System.Globalization;
-
-
 
 namespace _420_14B_FX_A24_TP3.classes
 {
@@ -12,8 +8,8 @@ namespace _420_14B_FX_A24_TP3.classes
     /// </summary>
     public class Categorie
     {
+        #region ATTRIBUTS
 
-      
         /// <summary>
         /// Identifiant unique de la catégorie
         /// </summary>
@@ -24,10 +20,9 @@ namespace _420_14B_FX_A24_TP3.classes
         /// </summary>
         private string _nom;
 
-  
+        #endregion
 
-
- 
+        #region PROPRIÉTÉS
 
         /// <summary>
         /// Obtient ou définit l'identifiant unique de la catégorie
@@ -55,10 +50,9 @@ namespace _420_14B_FX_A24_TP3.classes
             }
         }
 
+        #endregion
 
-
-
-     
+        #region CONSTRUCTEUR
 
         /// <summary>
         /// Constructeur paramètré
@@ -71,11 +65,9 @@ namespace _420_14B_FX_A24_TP3.classes
             Id = id;
         }
 
-     
+        #endregion
 
-
-
-
+        #region MÉTHODES
 
         /// <summary>
         /// Représentation de l'objet sous forme de chaîne de carcatère.
@@ -123,8 +115,6 @@ namespace _420_14B_FX_A24_TP3.classes
             throw new NotImplementedException();
         }
 
-
-
-
+        #endregion
     }
 }

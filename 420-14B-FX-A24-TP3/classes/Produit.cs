@@ -1,7 +1,4 @@
-﻿
-using System;
-
-
+﻿using System;
 
 namespace _420_14B_FX_A24_TP3.classes
 {
@@ -10,8 +7,17 @@ namespace _420_14B_FX_A24_TP3.classes
     /// </summary>
     public class Produit
     {
+        #region CONSTANTES
 
-      
+        public const int CODE_NB_CARAC_MAX = 10;
+        public const int CODE_NB_CARAC_MIN = 5;
+        public const int NOM_NB_CARAC_MAX = 30;
+        public const int NOM_NB_CARAC_MIN = 3;
+        public const decimal PRIX_MIN_VAL = 0;
+
+        #endregion
+
+        #region ATTRIBUTS
 
         /// <summary>
         /// Identifiant unique du produit
@@ -44,10 +50,6 @@ namespace _420_14B_FX_A24_TP3.classes
         /// </summary>
         private string _image;
 
-
-
-     
-
         /// <summary>
         /// Obtient ou définit l'indentifiant unique du produit.
         /// </summary>
@@ -56,6 +58,10 @@ namespace _420_14B_FX_A24_TP3.classes
             get { return _id; }
             set { _id = value; }
         }
+
+        #endregion
+
+        #region PROPRIÉTÉS
 
         /// <summary>
         /// Obtient ou définit le code du produit.
@@ -69,7 +75,12 @@ namespace _420_14B_FX_A24_TP3.classes
             get { return _code; }
             set 
             {
-                //Todo: Implémenter validation code produit.
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException(nameof(Code), "Le code ne doit pas être nul ou des espaces vides.");
+                }
+                if (value.Trim().Length > 0)
+
                 _code = value;
             }
 
@@ -136,9 +147,10 @@ namespace _420_14B_FX_A24_TP3.classes
             }
         }
 
-   
+        #endregion
 
-  
+        #region CONSTRUCTEUR
+
         /// <summary>
         /// Permet de construire un nouveau produit
         /// </summary>
@@ -153,9 +165,9 @@ namespace _420_14B_FX_A24_TP3.classes
             throw new NotImplementedException();
         }
 
-      
+        #endregion
 
-  
+        #region MÉTHODES
 
         /// <summary>
         /// Permet d'obtenir une représentation du produit.
@@ -204,9 +216,6 @@ namespace _420_14B_FX_A24_TP3.classes
             throw new NotImplementedException();
         }
 
-
-
-
-
-    } 
+        #endregion
+    }
 } 

@@ -22,17 +22,22 @@ namespace _420_14B_FX_A24_TP3
     /// </summary>
     public partial class FormProduit : Window
     {
+        #region INITIALISATION
+
         public FormProduit()
         {
             InitializeComponent();
-
-
         }
+
+        #endregion
+
+        #region ACTIONS_FORMULAIRE
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
         }
 
+        #endregion
     }
 }

@@ -1,15 +1,18 @@
-﻿
-
-namespace _420_14B_FX_A24_TP3.classes
+﻿namespace _420_14B_FX_A24_TP3.classes
 {
     /// <summary>
     /// Classe représentant une facture
     /// </summary>
     public class Facture 
     {
+        #region CONSTANTES
 
+        public const float TAUX_TPS = 5F;
+        public const float TAUX_TVQ = 9.975F;
 
-      
+        #endregion
+
+        #region ATTRIBUTS
 
         /// <summary>
         /// Identifiant unique de la facture
@@ -26,11 +29,9 @@ namespace _420_14B_FX_A24_TP3.classes
         /// </summary>
         private List<ProduitFacture> _produitsFacture;
 
+        #endregion
 
-
-  
-
-     
+        #region PROPRIÉTÉS
 
         /// <summary>
         /// Obtient ou définit l'identifiant unique de la facture
@@ -117,9 +118,9 @@ namespace _420_14B_FX_A24_TP3.classes
             
         }
 
-       
+        #endregion
 
-      
+        #region CONSTRUCTEURS
 
         /// <summary>
         /// Constructeur sans paramètre
@@ -143,8 +144,9 @@ namespace _420_14B_FX_A24_TP3.classes
 
         }
 
+        #endregion
 
-
+        #region MÉTHODES
 
         /// <summary>
         /// Permet d'ajout un produit à une facture
@@ -177,6 +179,6 @@ namespace _420_14B_FX_A24_TP3.classes
 
         }
 
-       
+        #endregion
     }
 }

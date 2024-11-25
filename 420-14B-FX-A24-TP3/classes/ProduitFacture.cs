@@ -1,8 +1,5 @@
-﻿
-
-using System;
+﻿using System;
 using System.ComponentModel;
-
 
 namespace _420_14B_FX_A24_TP3.classes
 {
@@ -11,10 +8,14 @@ namespace _420_14B_FX_A24_TP3.classes
     /// </summary>
     public class ProduitFacture 
     {
-        
+        #region CONSTANTES
 
-      
-      
+        public const int QUANTITE_MIN_VAL = 0;
+
+        #endregion
+
+        #region ATTRIBUTS
+
         /// <summary>
         /// Produit 
         /// </summary>
@@ -31,7 +32,9 @@ namespace _420_14B_FX_A24_TP3.classes
         /// </summary>
         private uint _quantite;
 
-        
+        #endregion
+
+        #region PROPRIÉTÉS
 
         /// <summary>
         /// Obtient ou défini le produit à ajouter à la facture
@@ -88,9 +91,9 @@ namespace _420_14B_FX_A24_TP3.classes
 
         }
 
-    
+        #endregion
 
-
+        #region CONSTRUCTEUR
 
         /// <summary>
         /// Constructeur avec paramètres
@@ -104,7 +107,6 @@ namespace _420_14B_FX_A24_TP3.classes
             throw new NotImplementedException();
         }
 
- 
-
+        #endregion
     }
 }

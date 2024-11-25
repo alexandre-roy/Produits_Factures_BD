@@ -1,15 +1,27 @@
 ﻿using _420_14B_FX_A24_TP3.classes;
-
+using Microsoft.Extensions.Configuration;
 using System.IO;
+
 namespace _420_14B_FX_TP3_A23.classes
 {
     public static class DAL
     {
+        #region CONSTANTES
 
+        private const string APPSETTINGS_FILE = "appsettings.json";
+        private const string CONNECTION_STRING = "DefaultConnection";
+        private const string IMAGE_PATH = "images:path";
 
+        #endregion
 
-      
-        
+        #region ATTRIBUT
+
+        private static IConfiguration _configuration;
+
+        #endregion
+
+        #region CONSTRUCTEUR
+
         /// <summary>
         /// Constructeur static permettant de charger les configurations de l'application
         /// </summary>
@@ -20,7 +32,9 @@ namespace _420_14B_FX_TP3_A23.classes
 
         }
 
-        
+        #endregion
+
+        #region MÉTHODES
 
         /// <summary>
         /// Permet d'obtenir liste des catégories provenant de la base de données triée par nom croissant
@@ -31,7 +45,6 @@ namespace _420_14B_FX_TP3_A23.classes
             //todo : Implémenter ObtenirListeCategories
             throw new NotImplementedException();
         }
-
 
         /// <summary>
         /// Permet d'obtenir un produit à partir de son code
@@ -140,6 +153,6 @@ namespace _420_14B_FX_TP3_A23.classes
             throw new NotImplementedException();
         }
 
-
+        #endregion
     }
 }
