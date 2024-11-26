@@ -43,10 +43,11 @@ namespace _420_14B_FX_A24_TP3.classes
             get { return _nom; }
             set
             {
-
-
-                //todo: implémenter validation du nom
-                _nom = value;
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException(nameof(Nom), "Le nom ne doit pas être nul ou des espaces vides.");
+                }
+                _nom = value.Trim();
             }
         }
 
@@ -86,8 +87,12 @@ namespace _420_14B_FX_A24_TP3.classes
         /// <remarks>Deux catégories sont égales si elle ont le même nom.</remarks>
         public override bool Equals(Object obj)
         {
-            //todo : Implémenter Equals pour Catégorie
-            throw new NotImplementedException();
+            if (obj is Categorie other)
+            {
+                return string.Compare(Nom, other.Nom, CultureInfo.InvariantCulture,
+            CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) == 0; 
+            }
+            return false;
 
         }
 
@@ -99,8 +104,16 @@ namespace _420_14B_FX_A24_TP3.classes
         /// <returns>True si égals, false sinon</returns>
         public static bool operator ==(Categorie a, Categorie b)
         {
-            //todo : Implémenter == pour Catégorie
-            throw new NotImplementedException();
+            if (ReferenceEquals(a, b))
+            {
+                return true;
+            }
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            {
+                return false;
+            }
+            return string.Compare(a.Nom, b.Nom, CultureInfo.InvariantCulture,
+            CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) == 0;
         }
 
         /// <summary>
@@ -111,8 +124,16 @@ namespace _420_14B_FX_A24_TP3.classes
         /// <returns>True si différents, false sinon</returns>
         public static bool operator !=(Categorie a, Categorie b)
         {
-            //todo : Implémenter != pour Catégorie
-            throw new NotImplementedException();
+            if (ReferenceEquals(a, b))
+            {
+                return false;
+            }
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            {
+                return true;
+            }
+            return !(string.Compare(a.Nom, b.Nom, CultureInfo.InvariantCulture,
+            CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) == 0);
         }
 
         #endregion
