@@ -194,7 +194,6 @@ namespace _420_14B_FX_A24_TP3.classes
         /// <returns>Un représentation de ***** sous forme de chaîne de caractères.</returns>
         public override string ToString()
         {
-
             return $"{Code} {Nom} {Prix}";
         }
 
@@ -205,10 +204,11 @@ namespace _420_14B_FX_A24_TP3.classes
         /// <returns>true si les deux objets sont égaux i.e que leur code sont identique; false autrement.</returns>
         public override bool Equals(Object? obj)
         {
-            //todo : Implémenter Equals pour Produit
-            throw new NotImplementedException();
-
-
+            if (obj is Produit other)
+            {
+                return Code == other.Code;
+            }
+            return false;
         }
 
         /// <summary>
@@ -219,9 +219,17 @@ namespace _420_14B_FX_A24_TP3.classes
         /// <returns>True si égals, false sinon</returns>
         public static bool operator ==(Produit a, Produit b)
         {
-            //todo : Implémenter == pour Produit
-            throw new NotImplementedException();
+            if (ReferenceEquals(a, b))
+            {
+                return true;
+            }
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            {
+                return false;
+            }
+            return a.Code == b.Code && a.Nom == b.Nom && a.Categorie == b.Categorie && a.Prix == b.Prix && a.Image == b.Image;
         }
+        
 
         /// <summary>
         /// Définition de l'opérateur non égale entre 2 produits
@@ -231,8 +239,15 @@ namespace _420_14B_FX_A24_TP3.classes
         /// <returns>True si différents, false sinon</returns>
         public static bool operator !=(Produit a, Produit b)
         {
-            //todo : Implémenter != pour Produit
-            throw new NotImplementedException();
+            if (ReferenceEquals(a, b))
+            {
+                return false;
+            }
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            {
+                return true;
+            }
+            return !(a.Code == b.Code && a.Nom == b.Nom && a.Categorie == b.Categorie && a.Prix == b.Prix && a.Image == b.Image);
         }
 
         #endregion
