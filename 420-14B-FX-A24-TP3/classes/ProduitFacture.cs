@@ -10,7 +10,7 @@ namespace _420_14B_FX_A24_TP3.classes
     {
         #region CONSTANTES
 
-        public const int QUANTITE_MIN_VAL = 0;
+        public const int QUANTITE_MIN_VAL = 1;
 
         #endregion
 
@@ -45,7 +45,10 @@ namespace _420_14B_FX_A24_TP3.classes
             get { return _produit; }
             private set
             {
-                //Todo : Implémenter la validation du produit
+                if (value is null)
+                {
+                    throw new ArgumentNullException(nameof(Produit), "Le produit ne doit pas être nul.");
+                }               
                 _produit = value;
             }
         }
@@ -74,19 +77,21 @@ namespace _420_14B_FX_A24_TP3.classes
             get { return _quantite; }
             set
             {
-                //Todo : Implémenter la validation de la quantité
+                if (value < QUANTITE_MIN_VAL)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(Produit), $"Il doit y avoir au moins {QUANTITE_MIN_VAL} produit.");
+                }
                 _quantite = value;
             }
         }
-
+    
         /// <summary>
         /// Obtient le sous-total pour le produit selon le prix unitaire et la quantité achetée.
         /// </summary>
         public decimal SousTotal
         {
             get {
-                //Todo : Implémenter le calcul du sous-total
-                return 0;
+                return PrixUnitaire * Quantite;
             }
 
         }
@@ -103,8 +108,9 @@ namespace _420_14B_FX_A24_TP3.classes
         /// <param name="quantite">Quantité du produit</param>
         public ProduitFacture(Produit produit, decimal prixUnitaire, uint quantite)
         {
-            //Todo : Implémenter le constructeur ProduitFacture
-            throw new NotImplementedException();
+            Produit = produit;
+            PrixUnitaire = prixUnitaire;
+            Quantite = quantite;
         }
 
         #endregion
