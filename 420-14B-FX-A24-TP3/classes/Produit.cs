@@ -79,26 +79,34 @@ namespace _420_14B_FX_A24_TP3.classes
                 {
                     throw new ArgumentException(nameof(Code), "Le code ne doit pas être nul ou des espaces vides.");
                 }
-                if (value.Trim().Length > 0)
-
-                _code = value;
+                if (value.Trim().Length > CODE_NB_CARAC_MAX || value.Trim().Length < CODE_NB_CARAC_MIN)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(Code), $"Le code doit être entre {CODE_NB_CARAC_MIN} et {CODE_NB_CARAC_MAX} caractères.");
+                }
+                _code = value.Trim().ToUpper();
             }
-
         }
 
         /// <summary>
         /// Obtient ou définit le nom du produit
         /// </summary>
         /// <remarks>Le nom ne doit pas contenir d'espaces inutiles</remarks>
-        /// <exception cref="System.ArgumentNullException">Lancée lorsque le nom est nul ou vide</exception>
+        /// <exception cref="System.ArgumentException">Lancée lorsque le nom est nul ou vide</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">Lancée lorsque le nom ne contient pas entre <see cref="NOM_NB_CARC_MIN"/> et <see cref="NOM_NB_CARC_MAX"/> </exception>
         public string Nom
         {
             get { return _nom; }
             set 
             {
-                //todo: implémenter validation nom;
-                _nom = value;
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException(nameof(Nom), "Le nom ne doit pas être nul ou des espaces vides.");
+                }
+                if (value.Trim().Length > NOM_NB_CARAC_MAX|| value.Trim().Length < NOM_NB_CARAC_MIN)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(Nom), $"Le nom doit être entre {NOM_NB_CARAC_MIN} et {NOM_NB_CARAC_MAX} caractères.");
+                }
+                _nom = value.Trim();
             }
         }
 
@@ -111,7 +119,10 @@ namespace _420_14B_FX_A24_TP3.classes
             get { return _categorie; }
             set 
             {
-                //todo: implémenter validation catégorie
+                if (value is null)
+                {
+                    throw new ArgumentNullException(nameof(Categorie), "La catégorie ne doit pas être nulle.");
+                }
                 _categorie = value;
             }
         }
@@ -126,7 +137,10 @@ namespace _420_14B_FX_A24_TP3.classes
             get { return _prix; }
             set
             {
-                //todo: implémenter validation prix
+                if (value <= PRIX_MIN_VAL)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(Prix), $"Le prix doit être au moins {PRIX_MIN_VAL}$.");
+                }
                 _prix = value;
             }
         }
@@ -140,10 +154,11 @@ namespace _420_14B_FX_A24_TP3.classes
             get { return _image; }
             set 
             {
-                //todo: implémenter validation image
-                _image = value;
-
-
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException(nameof(Image), "Le nom du fichier image ne doit pas être nul ou des espaces vides.");
+                }
+                _image = value.Trim();
             }
         }
 
@@ -161,8 +176,12 @@ namespace _420_14B_FX_A24_TP3.classes
         /// <param name="image">Nom du fichier image du produit</param>
         public Produit(uint id, string code, String nom, Categorie categorie, decimal prix, string image)
         {
-            //todo: implémenter Constructeur Produit
-            throw new NotImplementedException();
+            Id = id;
+            Code = code;
+            Nom = nom;
+            Categorie = categorie;
+            Prix = prix;
+            Image = image;
         }
 
         #endregion
