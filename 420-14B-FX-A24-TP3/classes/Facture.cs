@@ -71,11 +71,14 @@
         public decimal MontantSousTotal
         {
             get {
+                decimal montantSousTotal = 0;
 
-                //Todo: Implémenter le calcul du sous-total
-                return 0;
-            }
-          
+                foreach (ProduitFacture p in ProduitsFacture)
+                {
+                    montantSousTotal += p.SousTotal;
+                }
+                return montantSousTotal;
+            }        
         }
 
 
@@ -86,8 +89,7 @@
         public decimal MontantTPS
         {
             get {
-                //todo : Implémenter le calcul du montant de TPS de la facture
-                return 0;
+                return MontantSousTotal * (decimal)TAUX_TPS / 100;
             }
            
         }
@@ -98,11 +100,9 @@
         /// </summary>
         public decimal MontantTVQ
         {
-            get {
-                //todo : Implémenter le calcul du montant de TVQ de la facture
-                return 0;
+            get {              
+                return MontantSousTotal * (decimal)TAUX_TVQ / 100;
             }
-
         }
 
 
@@ -111,9 +111,8 @@
         /// </summary>
         public decimal MontantTotal
         {
-            get {
-                //todo : Implémenter le calcul du montant total de la facture
-                return 0;
+            get {                
+                return MontantSousTotal + MontantTPS + MontantTVQ;
             }
             
         }
@@ -128,8 +127,7 @@
         /// <remarks>Initialise une liste de produits vide</remarks>
         public Facture()
         {
-            //todo : Implémenter le consturcteur sans  paramètre de Facture.
-            throw new NotImplementedException();
+            ProduitsFacture = new List<ProduitFacture>();
         }
 
        /// <summary>
@@ -139,9 +137,9 @@
        /// <param name="dateCreation">Date de créatoin de la facture</param>
         public Facture(uint id, DateTime dateCreation)
         {
-            //todo : Implémenter le consturcteur avec  paramètre de Facture.
-            throw new NotImplementedException();
-
+            ProduitsFacture = new List<ProduitFacture>();
+            Id = id;
+            DateCreation = dateCreation;
         }
 
         #endregion
@@ -156,14 +154,35 @@
         /// <param name="quantite">La quantite du produit achetée</param>
         /// <remarks>Si le produit existe déjà dans la facture alors la quantité est ajouté au produit existant</remarks>
         /// <exception cref="System.ArgumentNullException">Lancée si le produit est null</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">Lancée si la prix unitaire est inférieur à <see cref="ProduitFacture.PRIX_MIN_VAL"/></exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Lancée si la prix unitaire est inférieur à <see cref="Produit.PRIX_MIN_VAL"/></exception>
         /// <exception cref="System.ArgumentOutOfRangeException">Lancée si la quantité inférieur à <see cref="ProduitFacture.QUANTITE_MIN_VAL"/></exception>
         public void AjouterProduit(Produit produit, decimal prixUnitaire, uint quantite)
         {
-            //todo : Implémenter AjouterProduit
-            throw new NotImplementedException();
+            if (produit is null)
+            {
+                throw new ArgumentNullException(nameof(produit), "Le produit ne doit pas être nul.");
+            }
 
+            if (prixUnitaire < Produit.PRIX_MIN_VAL)
+            {
+                throw new ArgumentOutOfRangeException(nameof(prixUnitaire), $"Le prix ne doit pas être inférieur à {Produit.PRIX_MIN_VAL}$");
+            }
 
+            if (quantite < ProduitFacture.QUANTITE_MIN_VAL)
+            {
+                throw new ArgumentOutOfRangeException(nameof(quantite), $"La quantité ne doit pas être inférieure à {ProduitFacture.QUANTITE_MIN_VAL}");
+            }
+
+            foreach (ProduitFacture p in ProduitsFacture)
+            {
+                if (p.Produit.Equals(produit))
+                {
+                    p.Quantite += quantite;
+                    return;
+                }
+            }
+
+            ProduitsFacture.Add(new ProduitFacture(produit, prixUnitaire, quantite));        
         }
 
         /// <summary>
@@ -174,9 +193,27 @@
         ///  <exception cref="System.InvalidOperationException">Lancée lorsque le produit n'existe pas dans la facture</exception>
         public void RetirerProduit(Produit produit)
         {
-            //todo : Implémenter RetirerProduit
-            throw new NotImplementedException();
+            ProduitFacture produitDansFacture = null;
 
+            if (produit is null)
+            {
+                throw new ArgumentNullException(nameof(produit), "Le produit ne doit pas être nul.");
+            }
+
+            foreach (ProduitFacture p in ProduitsFacture)
+            {
+                if (p.Produit.Equals(produit))
+                {
+                    produitDansFacture = p;                  
+                }
+            }
+
+            if (produitDansFacture is null)
+            {
+                throw new InvalidOperationException("Le produit n'existe pas dans la facture.");
+            }
+           
+            ProduitsFacture.Remove(produitDansFacture);
         }
 
         #endregion
