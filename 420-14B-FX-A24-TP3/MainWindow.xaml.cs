@@ -23,8 +23,7 @@ namespace _420_14B_FX_A24_TP3
 
         public MainWindow()
         {
-            InitializeComponent();
-
+            InitializeComponent();           
         }
 
         #endregion
@@ -33,7 +32,6 @@ namespace _420_14B_FX_A24_TP3
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
 
         }
 

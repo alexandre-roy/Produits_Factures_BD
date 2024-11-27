@@ -1,6 +1,8 @@
 ﻿using _420_14B_FX_A24_TP3.classes;
 using Microsoft.Extensions.Configuration;
+using MySqlConnector;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace _420_14B_FX_TP3_A23.classes
 {
@@ -27,9 +29,7 @@ namespace _420_14B_FX_TP3_A23.classes
         /// </summary>
         static DAL()
         {
-            //todo: implementer le constructeur de DAL
-            throw new NotImplementedException();
-
+            _configuration = new ConfigurationBuilder().AddJsonFile(APPSETTINGS_FILE, false, true).Build();
         }
 
         #endregion
@@ -42,8 +42,41 @@ namespace _420_14B_FX_TP3_A23.classes
         /// <returns>Liste de Categorie</returns>
         public static List<Categorie> ObtenirListeCategories()
         {
-            //todo : Implémenter ObtenirListeCategories
-            throw new NotImplementedException();
+            MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
+
+            List<Categorie> categories = new List<Categorie>();
+
+            try
+            {
+                cn.Open();
+
+                string requete = "SELECT * FROM categories ORDER BY Nom";
+
+                MySqlCommand cmd = new MySqlCommand(requete, cn);
+
+                MySqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    Categorie categorie = new Categorie(dr.GetUInt32(0), dr.GetString(1));
+
+                    categories.Add(categorie);
+                }
+                dr.Close();
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (cn is not null && cn.State == System.Data.ConnectionState.Open)
+                {
+                    cn.Close();
+                }
+            }
+
+            return categories;
         }
 
         /// <summary>
@@ -53,9 +86,55 @@ namespace _420_14B_FX_TP3_A23.classes
         /// <returns>Le produit trouvé. Sinon null.</returns>
         public static Produit ObtenirProduit(string code)
         {
+            MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
 
-            //todo : Implémenter ObtenirProduit
-            throw new NotImplementedException();
+            Produit produit = null;
+
+            try
+            {
+                cn.Open();
+
+                string requete = $"SELECT * FROM produits WHERE Code = @code";
+
+                MySqlCommand cmd = new MySqlCommand(requete, cn);
+
+                cmd.Parameters.AddWithValue("@code", code);
+
+                MySqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    uint categorieId = dr.GetUInt32(5);
+
+                    List<Categorie> categories = ObtenirListeCategories();
+
+                    Categorie categorie = null;
+
+                    foreach (Categorie c in categories)
+                    {
+                        if(c.Id == categorieId)
+                        {
+                            categorie = c;
+                        }
+                    }
+
+                    produit = new Produit(dr.GetUInt32(0), dr.GetString(1), dr.GetString(2), categorie, dr.GetDecimal(3), dr.GetString(4));
+                }
+                dr.Close();
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (cn is not null && cn.State == System.Data.ConnectionState.Open)
+                {
+                    cn.Close();
+                }
+            }
+
+            return produit;
         }
 
         /// <summary>
@@ -65,8 +144,35 @@ namespace _420_14B_FX_TP3_A23.classes
         /// <exception cref="System.ArgumentNullException">Lancée lorsque le produit est nul.</exception>
         public static void AjouterProduit(Produit produit)
         {
-            //todo : Implémenter AjouterProduit
-            throw new NotImplementedException();
+            MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
+
+            try
+            {
+                cn.Open();
+
+                string requete = $"INSERT INTO produits(Code, Nom, Prix, Image, IdCategorie) VALUES(@code, @nom, @prix, @image, @categorie)";
+
+                MySqlCommand cmd = new MySqlCommand(requete, cn);
+
+                cmd.Parameters.AddWithValue("@code", produit.Code);
+                cmd.Parameters.AddWithValue("@nom", produit.Nom);                
+                cmd.Parameters.AddWithValue("@prix", produit.Prix);
+                cmd.Parameters.AddWithValue("@image", produit.Image);
+                cmd.Parameters.AddWithValue("@categorie", produit.Categorie.Id);
+
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (cn is not null && cn.State == System.Data.ConnectionState.Open)
+                {
+                    cn.Close();
+                }
+            }
         }
 
         /// <summary>
