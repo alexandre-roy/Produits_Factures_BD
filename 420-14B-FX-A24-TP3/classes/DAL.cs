@@ -185,8 +185,63 @@ namespace _420_14B_FX_TP3_A23.classes
         /// <remarks>La liste des produits est toujours triée en ordre croissant de nom.</remarks>
         public static List<Produit> ObtenirListeProduits(string nomProduit = "", Categorie categorie = null)
         {
-            //todo : Implémenter ObtenirListeProduits
-            throw new NotImplementedException();
+            MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
+
+            List<Produit> produits = new List<Produit>();
+
+            try
+            {
+                cn.Open();
+
+                string requete = "SELECT * FROM produits WHERE Nom = @nom OR IdCategorie = @categorie ORDER BY Nom";
+
+                string requeteAll = "SELECT * FROM produits ORDER BY Nom";
+
+                MySqlCommand cmd = new MySqlCommand(requete, cn);
+
+                MySqlCommand cmdAll = new MySqlCommand(requeteAll, cn);
+
+                cmd.Parameters.AddWithValue("@nom", nomProduit);
+
+                cmd.Parameters.AddWithValue("@categorie", categorie.Id);
+
+                MySqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    
+
+                    Produit produit = new Produit(dr.GetUInt32(0), dr.GetString(1), dr.GetString(2), categorie, dr.GetDecimal(3), dr.GetString(4));
+
+                    produits.Add(produit);
+                }
+                dr.Close();
+                if (produits.Count == 0)
+                {
+                    dr = cmdAll.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        Produit produit = new Produit(dr.GetUInt32(0), dr.GetString(1), dr.GetString(2), categorie, dr.GetDecimal(3), dr.GetString(4));
+
+                        produits.Add(produit);
+                    }
+                    dr.Close();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (cn is not null && cn.State == System.Data.ConnectionState.Open)
+                {
+                    cn.Close();
+                }
+            }
+
+            return produits;
         }
 
         /// <summary>
@@ -197,8 +252,55 @@ namespace _420_14B_FX_TP3_A23.classes
         public static Produit ObtenirProduit(uint id)
         {
 
-            ////todo : Implémenter ObtenirProduit
-            throw new NotImplementedException();
+            MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
+
+            Produit produit = null;
+
+            try
+            {
+                cn.Open();
+
+                string requete = $"SELECT * FROM produits WHERE Id = @id";
+
+                MySqlCommand cmd = new MySqlCommand(requete, cn);
+
+                cmd.Parameters.AddWithValue("@id", id);
+
+                MySqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    uint categorieId = dr.GetUInt32(5);
+
+                    List<Categorie> categories = ObtenirListeCategories();
+
+                    Categorie categorie = null;
+
+                    foreach (Categorie c in categories)
+                    {
+                        if (c.Id == categorieId)
+                        {
+                            categorie = c;
+                        }
+                    }
+
+                    produit = new Produit(dr.GetUInt32(0), dr.GetString(1), dr.GetString(2), categorie, dr.GetDecimal(3), dr.GetString(4));
+                }
+                dr.Close();
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (cn is not null && cn.State == System.Data.ConnectionState.Open)
+                {
+                    cn.Close();
+                }
+            }
+
+            return produit;
         }
 
 
