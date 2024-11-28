@@ -89,11 +89,14 @@ namespace _420_14B_FX_A24_TP3.classes
         {
             if (obj is Categorie other)
             {
-                return string.Compare(Nom, other.Nom, CultureInfo.InvariantCulture,
-            CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) == 0; 
+                int comparaison = string.Compare(Nom, other.Nom, CultureInfo.InvariantCulture, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase);
+
+                if (comparaison == 0)
+                {
+                    return true;
+                }              
             }
             return false;
-
         }
 
         /// <summary>

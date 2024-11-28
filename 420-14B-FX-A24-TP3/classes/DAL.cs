@@ -1,6 +1,7 @@
 ﻿using _420_14B_FX_A24_TP3.classes;
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 
@@ -144,6 +145,11 @@ namespace _420_14B_FX_TP3_A23.classes
         /// <exception cref="System.ArgumentNullException">Lancée lorsque le produit est nul.</exception>
         public static void AjouterProduit(Produit produit)
         {
+            if (produit is null)
+            {
+                throw new ArgumentNullException(nameof(produit), "Le produit ne doit pas être nul");
+            }
+
             MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
 
             try
@@ -312,11 +318,55 @@ namespace _420_14B_FX_TP3_A23.classes
         /// <exception cref="InvalidOperationException">Lancée lorsque le produit n'existe pas dans la base de donnée.</exception>
         public static void ModifierProduit(Produit produit)
         {
-            //todo : Implémenter ModifierProduit
-            throw new NotImplementedException();
+            if (produit is null)
+            {
+                throw new ArgumentNullException(nameof(produit), "Le produit ne doit pas être nul");
+            }
 
+            MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
+
+            try
+            {
+                cn.Open();
+
+                string requeteExiste = "SELECT COUNT(*) FROM produits WHERE produits.id = @id";
+
+                string requete = "UPDATE produits SET Code = @code, Nom = @nom, Prix = @prix, Image = @image, IdCategorie = @categorie WHERE produits.Id = @id";
+
+                MySqlCommand cmdExiste = new MySqlCommand(requeteExiste, cn);
+
+                MySqlCommand cmd = new MySqlCommand(requete, cn);
+
+                cmdExiste.Parameters.AddWithValue("@id", produit.Id);
+
+                cmd.Parameters.AddWithValue("@id", produit.Id);
+                cmd.Parameters.AddWithValue("@code", produit.Code);
+                cmd.Parameters.AddWithValue("@nom", produit.Nom);
+                cmd.Parameters.AddWithValue("@prix", produit.Prix);
+                cmd.Parameters.AddWithValue("@image", produit.Image);
+                cmd.Parameters.AddWithValue("@categorie", produit.Categorie.Id);
+
+                int existe = Convert.ToInt32(cmdExiste.ExecuteScalar());
+
+                if (existe == 0)
+                {
+                    throw new InvalidOperationException("Le produit n'existe pas dans la base de donnée.");
+                }
+
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (cn is not null && cn.State == System.Data.ConnectionState.Open)
+                {
+                    cn.Close();
+                }
+            }
         }
-
 
         /// <summary>
         /// Permet de supprimer un produit dans la base de donnée
@@ -329,10 +379,8 @@ namespace _420_14B_FX_TP3_A23.classes
 
         public static bool SupprimerProduit(Produit produit)
         {
-
             //todo : Implémenter SupprimerProduit
             throw new NotImplementedException();
-
         }
 
 
