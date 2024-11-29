@@ -16,7 +16,7 @@
    
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Margin="0,0,75,0" x:Name="spAjouterProduit" Orientation="Horizontal" >
-                            <Button x:Name="btnNouveauProduit" Background="White" BorderThickness="0" DockPanel.Dock="left">
+                            <Button x:Name="btnNouveauProduit" Background="White" BorderThickness="0" DockPanel.Dock="left" Click="btnNouveauProduit_Click">
                                 <Image Source="/Resources/new.png" Width="25" Margin="5"/>
                             </Button>
                             <TextBox x:Name="txtRechercher" Width="250" Height="25" Margin="0,0,5,0" />
@@ -28,8 +28,9 @@
 
                     </StackPanel>
                     <!--Affichage des produits ici-->
-                    <ListBox Name="lst123" Width="300" Height="300" Margin="20"></ListBox>
-
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Height="390" Margin="10">
+                        <WrapPanel Name="wpProduits" Orientation="Horizontal"></WrapPanel>
+                    </ScrollViewer>
                 </StackPanel>
             
                  

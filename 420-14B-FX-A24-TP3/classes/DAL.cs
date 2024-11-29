@@ -11,9 +11,9 @@ namespace _420_14B_FX_TP3_A23.classes
     {
         #region CONSTANTES
 
-        private const string APPSETTINGS_FILE = "appsettings.json";
+        public const string APPSETTINGS_FILE = "appsettings.json";
         private const string CONNECTION_STRING = "DefaultConnection";
-        private const string IMAGE_PATH = "images:path";
+        public const string IMAGE_PATH = "images:path";
 
         #endregion
 
@@ -95,11 +95,9 @@ namespace _420_14B_FX_TP3_A23.classes
             {
                 cn.Open();
 
-                string requete = $"SELECT * FROM produits WHERE Code = @code";
+                string requete = $"SELECT * FROM produits WHERE Code = {code}";
 
                 MySqlCommand cmd = new MySqlCommand(requete, cn);
-
-                cmd.Parameters.AddWithValue("@code", code);
 
                 MySqlDataReader dr = cmd.ExecuteReader();
 
@@ -199,7 +197,7 @@ namespace _420_14B_FX_TP3_A23.classes
             {
                 cn.Open();
 
-                string requete = "SELECT * FROM produits WHERE Nom = @nom OR IdCategorie = @categorie ORDER BY Nom";
+                string requete = $"SELECT * FROM produits WHERE Nom LIKE '%{nomProduit}%' OR IdCategorie = {categorie.Id} ORDER BY Nom";
 
                 string requeteAll = "SELECT * FROM produits ORDER BY Nom";
 
@@ -207,16 +205,10 @@ namespace _420_14B_FX_TP3_A23.classes
 
                 MySqlCommand cmdAll = new MySqlCommand(requeteAll, cn);
 
-                cmd.Parameters.AddWithValue("@nom", nomProduit);
-
-                cmd.Parameters.AddWithValue("@categorie", categorie.Id);
-
                 MySqlDataReader dr = cmd.ExecuteReader();
 
                 while (dr.Read())
                 {
-                    
-
                     Produit produit = new Produit(dr.GetUInt32(0), dr.GetString(1), dr.GetString(2), categorie, dr.GetDecimal(3), dr.GetString(4));
 
                     produits.Add(produit);

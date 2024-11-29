@@ -37,11 +37,11 @@
                     <Image x:Name="imgProduit" Width="250" Height="250"/>
                 </Border>
 
-                <Button x:Name="btnAjouterImage" Content="Parcourrir ..." HorizontalAlignment="Right" Margin="5" Width="125" />
+                <Button x:Name="btnAjouterImage" Content="Parcourrir ..." HorizontalAlignment="Right" Margin="5" Width="125" Click="btnAjouterImage_Click" />
             </StackPanel>
         </StackPanel>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="20">
-            <Button x:Name="btnAjouterModifierSupprimer" Content="btnAjouterModifierSupprimer" Width="150" Margin="5"/>
+            <Button x:Name="btnAjouterModifierSupprimer" Content="btnAjouterModifierSupprimer" Width="150" Margin="5" Click="btnAjouterModifierSupprimer_Click"/>
             <Button x:Name="btnAnnuler" Content="Annuler" Width="150" Margin="5" />
         </StackPanel>
 
