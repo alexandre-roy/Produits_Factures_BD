@@ -197,35 +197,50 @@ namespace _420_14B_FX_TP3_A23.classes
             {
                 cn.Open();
 
-                string requete = $"SELECT * FROM produits WHERE Nom LIKE '%{nomProduit}%' OR IdCategorie = {categorie.Id} ORDER BY Nom";
+                string requete = "";
 
-                string requeteAll = "SELECT * FROM produits ORDER BY Nom";
+                if (string.IsNullOrWhiteSpace(nomProduit) && categorie is not null)
+                {
+                    requete = $"SELECT * FROM produits WHERE IdCategorie = {categorie.Id} ORDER BY Nom";
+                }
+                else if (!string.IsNullOrWhiteSpace(nomProduit) && categorie is not null)
+                {
+                    requete = $"SELECT * FROM produits WHERE Nom LIKE '%{nomProduit}%' AND IdCategorie = {categorie.Id} ORDER BY Nom";
+                }
+                else if (!string.IsNullOrWhiteSpace(nomProduit) && categorie is null)
+                {
+                    requete = $"SELECT * FROM produits WHERE Nom LIKE '%{nomProduit}%' ORDER BY Nom";
+                }
+                else
+                {
+                    requete = "SELECT * FROM produits ORDER BY Nom";
+                }
 
                 MySqlCommand cmd = new MySqlCommand(requete, cn);
-
-                MySqlCommand cmdAll = new MySqlCommand(requeteAll, cn);
 
                 MySqlDataReader dr = cmd.ExecuteReader();
 
                 while (dr.Read())
                 {
-                    Produit produit = new Produit(dr.GetUInt32(0), dr.GetString(1), dr.GetString(2), categorie, dr.GetDecimal(3), dr.GetString(4));
+                    uint categorieId = dr.GetUInt32(5);
+
+                    List<Categorie> categories = ObtenirListeCategories();
+
+                    Categorie categorieItem = null;
+
+                    foreach (Categorie c in categories)
+                    {
+                        if (c.Id == categorieId)
+                        {
+                            categorieItem = c;
+                        }
+                    }
+
+                    Produit produit = new Produit(dr.GetUInt32(0), dr.GetString(1), dr.GetString(2), categorieItem, dr.GetDecimal(3), dr.GetString(4));
 
                     produits.Add(produit);
                 }
                 dr.Close();
-                if (produits.Count == 0)
-                {
-                    dr = cmdAll.ExecuteReader();
-
-                    while (dr.Read())
-                    {
-                        Produit produit = new Produit(dr.GetUInt32(0), dr.GetString(1), dr.GetString(2), categorie, dr.GetDecimal(3), dr.GetString(4));
-
-                        produits.Add(produit);
-                    }
-                    dr.Close();
-                }
             }
             catch
             {

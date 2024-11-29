@@ -31,13 +31,17 @@ namespace _420_14B_FX_A24_TP3
 
         private EtatFormulaire _etat;
 
+        private Produit _produit;
+
         #endregion
 
         #region INITIALISATION
 
-        public FormProduit(EtatFormulaire etat)
+        public FormProduit(EtatFormulaire etat, Produit produit = null)
         {
             _etat = etat;
+            _produit = produit;
+
             _configuration = new ConfigurationBuilder().AddJsonFile(DAL.APPSETTINGS_FILE, false, true).Build();
 
             InitializeComponent();
@@ -69,6 +73,17 @@ namespace _420_14B_FX_A24_TP3
                 btnAjouterModifierSupprimer.Content = "Ajouter";
                 lblTitre.Text = "Ajout d'un produit";
             }
+            if (_etat == EtatFormulaire.Modifier)
+            {
+                btnAjouterModifierSupprimer.Content = "Modifier";
+                lblTitre.Text = "Modification d'un produit";
+
+                txtCode.Text = _produit.Code;
+                txtNom.Text = _produit.Nom;
+                txtPrix.Text = _produit.Prix.ToString();
+                cboCategories.SelectedItem = _produit.Categorie;
+                imgProduit.Source = new BitmapImage(new Uri(_configuration[DAL.IMAGE_PATH] + _produit.Image));
+            }
         }
 
         #endregion
@@ -89,17 +104,34 @@ namespace _420_14B_FX_A24_TP3
 
                 DAL.AjouterProduit(produit);
 
+                this.DialogResult = true;
+            }
+            else if (_etat == EtatFormulaire.Modifier)
+            {
+                BitmapImage bi = imgProduit.Source as BitmapImage;
+                string image = bi.UriSource.LocalPath;
+                string extension = System.IO.Path.GetExtension(image);
+                string nomImage = Guid.NewGuid().ToString() + extension;
+                string cheminImage = _configuration[DAL.IMAGE_PATH];
+
+                File.Copy(image, cheminImage + nomImage);
+
+                _produit.Code = txtCode.Text;
+                _produit.Nom = txtNom.Text;
+                _produit.Prix = decimal.Parse(txtPrix.Text);
+                _produit.Categorie = (Categorie)cboCategories.SelectedItem;
+                _produit.Image = nomImage;
+
+                DAL.ModifierProduit(_produit);
 
                 this.DialogResult = true;
             }
-            
         }
 
         private void btnAjouterImage_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //todo : À compléter
                 OpenFileDialog openFileDialog = new OpenFileDialog();
 
                 openFileDialog.Filter = "image PNG | *.png| image JPG | *.jpg| image AVIF | *.avif";
