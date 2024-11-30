@@ -383,11 +383,39 @@ namespace _420_14B_FX_TP3_A23.classes
         /// <exception cref="ArgumentNullException">Lancée lorsque le produit est null</exception>
         /// <exception cref="System.InvalidOperationException">Lancée lorque le produit existe dans au moins une facture</exception>
         /// <returns>Vrai si le produit a été supprimé, faux sinon</returns>
-
         public static bool SupprimerProduit(Produit produit)
         {
-            //todo : Implémenter SupprimerProduit
-            throw new NotImplementedException();
+            if (produit is null)
+            {
+                throw new ArgumentNullException(nameof(produit), "Le produit ne doit pas être nul");
+            }
+
+            MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
+
+            try
+            {
+                cn.Open();
+
+                string requete = "DELETE FROM produits WHERE Id = @id";
+
+                MySqlCommand cmd = new MySqlCommand(requete, cn);
+
+                cmd.Parameters.AddWithValue("@id", produit.Id);
+
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (cn is not null && cn.State == System.Data.ConnectionState.Open)
+                {
+                    cn.Close();
+                }
+            }
         }
 
 

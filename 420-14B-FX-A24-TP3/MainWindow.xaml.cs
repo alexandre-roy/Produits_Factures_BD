@@ -181,7 +181,13 @@ namespace _420_14B_FX_A24_TP3
 
         private void btnSupprimer_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Êtes-vous sûr de vouloir supprimer ce produit?", "Supression d'un produit", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            Image imgProduit = (Image)sender;
+            Produit produit = (Produit)imgProduit.Tag;
 
+            DAL.SupprimerProduit(produit);
+
+            AfficherProduits();
         }
     }
 }
