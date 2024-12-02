@@ -19,8 +19,8 @@
                             <Button x:Name="btnNouveauProduit" Background="White" BorderThickness="0" DockPanel.Dock="left" Click="btnNouveauProduit_Click" Margin="2">
                                 <Image Source="/Resources/new.png" Width="25" Margin="5"/>
                             </Button>
-                            <TextBox x:Name="txtRechercher" Width="250" Height="25" Margin="0,0,5,0" />
-                            <ComboBox Name="cboCategories" Width="150" Margin="5,5,5,5"/>
+                            <TextBox x:Name="txtRechercher" Width="250" Height="25" Margin="0,0,5,0" Padding="2" />
+                            <ComboBox Name="cboCategories" Width="150" Margin="5,5,5,5" Padding="6"/>
                             <Button x:Name="btnRechercherProduit" BorderThickness="0" Background="White" Click="btnRechercherProduit_Click">
                                 <Image Source="/Resources/search.png" Width="25" Margin="5"/>
                             </Button>
