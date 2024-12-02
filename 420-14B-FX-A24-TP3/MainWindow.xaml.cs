@@ -48,7 +48,7 @@ namespace _420_14B_FX_A24_TP3
             foreach (Produit p in lstProduits)
             {
                 Border border = new Border();
-                border.BorderBrush = new SolidColorBrush(Colors.Black);
+                border.BorderBrush = new SolidColorBrush(Colors.LightGray);
                 border.BorderThickness = new Thickness(1);
                 border.CornerRadius = new CornerRadius(10);
                 border.Margin = new Thickness(5);
@@ -97,11 +97,11 @@ namespace _420_14B_FX_A24_TP3
                 stackPanelBoutons.Margin = new Thickness(0, 10, 5, 0);
 
                 Image btnModifier = new Image();
-                btnModifier.Height = 25;
-                btnModifier.Width = 25;
+                btnModifier.Height = 30;
+                btnModifier.Width = 30;
                 btnModifier.HorizontalAlignment = HorizontalAlignment.Right;
-                btnModifier.Source = biProduit;
-                btnModifier.Margin = new Thickness(0, 0, 5, 0);
+                btnModifier.Source = new BitmapImage(new Uri("/Resources/edit.png", UriKind.Relative));
+                btnModifier.Margin = new Thickness(0, 0, 0, 0);
                 btnModifier.MouseLeftButtonDown += new MouseButtonEventHandler(btnModifier_MouseLeftButtonDown);
                 btnModifier.Tag = p;
 
@@ -109,8 +109,8 @@ namespace _420_14B_FX_A24_TP3
                 btnSupprimer.Height = 25;
                 btnSupprimer.Width = 25;
                 btnSupprimer.HorizontalAlignment = HorizontalAlignment.Right;
-                btnSupprimer.Source = biProduit;
-                btnSupprimer.Margin = new Thickness(5, 0, 0, 0);
+                btnSupprimer.Source = new BitmapImage(new Uri("/Resources/delete.png", UriKind.Relative));
+                btnSupprimer.Margin = new Thickness(5, 0, 0, 2);
                 btnSupprimer.MouseLeftButtonDown += new MouseButtonEventHandler(btnSupprimer_MouseLeftButtonDown);
                 btnSupprimer.Tag = p;
 
@@ -135,6 +135,8 @@ namespace _420_14B_FX_A24_TP3
         {            
             cboCategories.ItemsSource = DAL.ObtenirListeCategories();
 
+            cboCategories.SelectedIndex = 0;
+
             AfficherProduits();
         }
         
@@ -157,9 +159,6 @@ namespace _420_14B_FX_A24_TP3
         private void btnRechercherProduit_Click(object sender, RoutedEventArgs e)
         {
             AfficherProduits();
-
-            txtRechercher.Text = "";
-            cboCategories.SelectedItem = null;
         }
 
         private void btnModifier_MouseLeftButtonDown(object sender, RoutedEventArgs e)
@@ -181,12 +180,14 @@ namespace _420_14B_FX_A24_TP3
 
         private void btnSupprimer_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Êtes-vous sûr de vouloir supprimer ce produit?", "Supression d'un produit", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            MessageBox.Show("Êtes-vous sûr de vouloir supprimer ce produit?", "Supression d'un produit", MessageBoxButton.YesNo, MessageBoxImage.Question);
             Image imgProduit = (Image)sender;
             Produit produit = (Produit)imgProduit.Tag;
 
             DAL.SupprimerProduit(produit);
 
+            MessageBox.Show("Produit supprimé avec succès!", "Suppression d'un produit");
+            
             AfficherProduits();
         }
     }

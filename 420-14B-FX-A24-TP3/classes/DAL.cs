@@ -47,11 +47,15 @@ namespace _420_14B_FX_TP3_A23.classes
 
             List<Categorie> categories = new List<Categorie>();
 
+            Categorie categorieToutes = new Categorie(0, "Toutes");
+
+            categories.Add(categorieToutes);
+
             try
             {
                 cn.Open();
 
-                string requete = "SELECT * FROM categories ORDER BY Nom";
+                string requete = "SELECT Id, Nom FROM categories ORDER BY Nom";
 
                 MySqlCommand cmd = new MySqlCommand(requete, cn);
 
@@ -95,7 +99,7 @@ namespace _420_14B_FX_TP3_A23.classes
             {
                 cn.Open();
 
-                string requete = $"SELECT * FROM produits WHERE Code = {code}";
+                string requete = $"SELECT Id, Code, Nom, Prix, Image, IdCategorie FROM produits WHERE Code = {code}";
 
                 MySqlCommand cmd = new MySqlCommand(requete, cn);
 
@@ -199,21 +203,21 @@ namespace _420_14B_FX_TP3_A23.classes
 
                 string requete = "";
 
-                if (string.IsNullOrWhiteSpace(nomProduit) && categorie is not null)
+                if (string.IsNullOrWhiteSpace(nomProduit) && categorie.Nom != "Toutes")
                 {
-                    requete = $"SELECT * FROM produits WHERE IdCategorie = {categorie.Id} ORDER BY Nom";
+                    requete = $"SELECT Id, Code, Nom, Prix, Image, IdCategorie FROM produits WHERE IdCategorie = {categorie.Id} ORDER BY Nom";
                 }
-                else if (!string.IsNullOrWhiteSpace(nomProduit) && categorie is not null)
+                else if (!string.IsNullOrWhiteSpace(nomProduit) && categorie.Nom != "Toutes")
                 {
-                    requete = $"SELECT * FROM produits WHERE Nom LIKE '%{nomProduit}%' AND IdCategorie = {categorie.Id} ORDER BY Nom";
+                    requete = $"SELECT Id, Code, Nom, Prix, Image, IdCategorie FROM produits WHERE Nom LIKE '%{nomProduit}%' AND IdCategorie = {categorie.Id} ORDER BY Nom";
                 }
-                else if (!string.IsNullOrWhiteSpace(nomProduit) && categorie is null)
+                else if (!string.IsNullOrWhiteSpace(nomProduit) && categorie.Nom == "Toutes")
                 {
-                    requete = $"SELECT * FROM produits WHERE Nom LIKE '%{nomProduit}%' ORDER BY Nom";
+                    requete = $"SELECT Id, Code, Nom, Prix, Image, IdCategorie FROM produits WHERE Nom LIKE '%{nomProduit}%' ORDER BY Nom";
                 }
                 else
                 {
-                    requete = "SELECT * FROM produits ORDER BY Nom";
+                    requete = "SELECT Id, Code, Nom, Prix, Image, IdCategorie FROM produits ORDER BY Nom";
                 }
 
                 MySqlCommand cmd = new MySqlCommand(requete, cn);
@@ -273,7 +277,7 @@ namespace _420_14B_FX_TP3_A23.classes
             {
                 cn.Open();
 
-                string requete = $"SELECT * FROM produits WHERE Id = @id";
+                string requete = $"SELECT Id, Code, Nom, Prix, Image, IdCategorie FROM produits WHERE Id = @id";
 
                 MySqlCommand cmd = new MySqlCommand(requete, cn);
 
@@ -336,7 +340,7 @@ namespace _420_14B_FX_TP3_A23.classes
             {
                 cn.Open();
 
-                string requeteExiste = "SELECT COUNT(*) FROM produits WHERE produits.id = @id";
+                string requeteExiste = "SELECT COUNT(Id) FROM produits WHERE produits.id = @id";
 
                 string requete = "UPDATE produits SET Code = @code, Nom = @nom, Prix = @prix, Image = @image, IdCategorie = @categorie WHERE produits.Id = @id";
 
