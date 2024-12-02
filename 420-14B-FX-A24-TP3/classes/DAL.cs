@@ -268,7 +268,6 @@ namespace _420_14B_FX_TP3_A23.classes
         /// <returns>Le produit trouvé ou Null si aucun produit trouvé.</returns>
         public static Produit ObtenirProduit(uint id)
         {
-
             MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
 
             Produit produit = null;
@@ -431,8 +430,46 @@ namespace _420_14B_FX_TP3_A23.classes
         /// <exception cref="System.ArgumentNullException">Lancée si la liste des produitsFacture est nulle ou vide.</exception>
         public static void AjouterFacture(Facture facture)
         {
-            //todo : Implémenter AjouterFacture
-            throw new NotImplementedException();
+            if (facture is null)
+            {
+                throw new ArgumentNullException(nameof(facture), "La facture ne doit pas être nulle");
+            }
+
+            if (facture.ProduitsFacture is null)
+            {
+                throw new ArgumentNullException(nameof(facture), "ProduitFacture ne doit pas être nul");
+            }
+
+            MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
+
+            try
+            {
+                cn.Open();
+
+                string requete = $"INSERT INTO factures(Id, Date, MontantSousTotal, MontantTPS, MontantTVQ, MontantTotal) VALUES(@id, @dateCreation, @montantSousTotal, @montantTPS, @montantTVQ, @montantTotal)";
+
+                MySqlCommand cmd = new MySqlCommand(requete, cn);
+
+                cmd.Parameters.AddWithValue("@id", facture.Id);
+                cmd.Parameters.AddWithValue("@dateCreation", facture.DateCreation);
+                cmd.Parameters.AddWithValue("@montantSousTotal", facture.MontantSousTotal);
+                cmd.Parameters.AddWithValue("@montantTPS", facture.MontantTPS);
+                cmd.Parameters.AddWithValue("@montantTVQ", facture.MontantTVQ);
+                cmd.Parameters.AddWithValue("@montantTotal", facture.MontantTotal);
+
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (cn is not null && cn.State == System.Data.ConnectionState.Open)
+                {
+                    cn.Close();
+                }
+            }
         }
 
         /// <summary>
@@ -443,11 +480,43 @@ namespace _420_14B_FX_TP3_A23.classes
         /// <returns>La facture trouvée. Null si aucune facture n'est trouvée</returns>
         public static Facture ObtenirFacture(uint idFacture)
         {
+            MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
 
-            //todo : Implémenter ObtenirFacture
-            throw new NotImplementedException();
+            Facture facture = null;
+
+            try
+            {
+                cn.Open();
+
+                string requete = $"SELECT Id, Date, MontantSousTotal, MontantTPS, MontantTVQ, MontantTotal FROM factures WHERE Id = @id";
+
+                MySqlCommand cmd = new MySqlCommand(requete, cn);
+
+                cmd.Parameters.AddWithValue("@id", idFacture);
+
+                MySqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    facture = new Facture(dr.GetUInt32(0), dr.GetDateTime(1));
+                }
+                dr.Close();
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (cn is not null && cn.State == System.Data.ConnectionState.Open)
+                {
+                    cn.Close();
+                }
+            }
+
+            return facture;
         }
-
+    
         #endregion
     }
 }
