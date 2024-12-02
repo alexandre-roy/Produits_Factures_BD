@@ -99,7 +99,7 @@ namespace _420_14B_FX_TP3_A23.classes
             {
                 cn.Open();
 
-                string requete = $"SELECT Id, Code, Nom, Prix, Image, IdCategorie FROM produits WHERE Code = {code}";
+                string requete = $"SELECT Id, Code, Nom, Prix, Image, IdCategorie FROM produits WHERE Code = '{code}'";
 
                 MySqlCommand cmd = new MySqlCommand(requete, cn);
 

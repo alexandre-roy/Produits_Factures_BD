@@ -93,18 +93,26 @@ namespace _420_14B_FX_A24_TP3
             if(_etat == EtatFormulaire.Ajouter)
             {
                 BitmapImage bi = imgProduit.Source as BitmapImage;
-                string image = bi.UriSource.LocalPath;
+                string image = "";
+                if (bi != null)
+                {
+                    image = bi.UriSource.LocalPath;
+                }
                 string extension = System.IO.Path.GetExtension(image);
                 string nomImage = Guid.NewGuid().ToString() + extension;
                 string cheminImage = _configuration[DAL.IMAGE_PATH];
+                if (!string.IsNullOrEmpty(image))
+                {
+                    File.Copy(image, cheminImage + nomImage);
+                }
+                if (ValiderFormulaire())
+                {
+                    image = bi.UriSource.LocalPath;
+                    Produit produit = new Produit(0, txtCode.Text, txtNom.Text, (Categorie)cboCategories.SelectedItem, decimal.Parse(txtPrix.Text), nomImage);
 
-                File.Copy(image, cheminImage + nomImage);
-
-                Produit produit = new Produit(0, txtCode.Text, txtNom.Text, (Categorie)cboCategories.SelectedItem, decimal.Parse(txtPrix.Text), nomImage);
-
-                DAL.AjouterProduit(produit);
-
-                this.DialogResult = true;
+                    DAL.AjouterProduit(produit);
+                    this.DialogResult = true;
+                }
             }
             else if (_etat == EtatFormulaire.Modifier)
             {
@@ -113,18 +121,19 @@ namespace _420_14B_FX_A24_TP3
                 string extension = System.IO.Path.GetExtension(image);
                 string nomImage = Guid.NewGuid().ToString() + extension;
                 string cheminImage = _configuration[DAL.IMAGE_PATH];
-
                 File.Copy(image, cheminImage + nomImage);
 
-                _produit.Code = txtCode.Text;
-                _produit.Nom = txtNom.Text;
-                _produit.Prix = decimal.Parse(txtPrix.Text);
-                _produit.Categorie = (Categorie)cboCategories.SelectedItem;
-                _produit.Image = nomImage;
+                if (ValiderFormulaire())
+                {
+                    _produit.Code = txtCode.Text;
+                    _produit.Nom = txtNom.Text;
+                    _produit.Prix = decimal.Parse(txtPrix.Text);
+                    _produit.Categorie = (Categorie)cboCategories.SelectedItem;
+                    _produit.Image = nomImage;
+                    DAL.ModifierProduit(_produit);
 
-                DAL.ModifierProduit(_produit);
-
-                this.DialogResult = true;
+                    this.DialogResult = true;
+                }
             }
         }
 
@@ -145,6 +154,69 @@ namespace _420_14B_FX_A24_TP3
             catch (Exception ex)
             {
                 MessageBox.Show("Une erreur s'est produite :\n" + ex.Message, "Ajout d'une image");
+            }
+        }
+
+        private bool ValiderFormulaire()
+        {
+            bool estValide = false;
+            string messageErreur = "";
+            if (_etat == EtatFormulaire.Ajouter)
+            {
+                if (DAL.ObtenirProduit(txtCode.Text) != null)
+                {
+                    messageErreur += "- Le code du produit existe déjà.\n";
+                }
+            }
+            if (_etat == EtatFormulaire.Modifier)
+            {
+                if (DAL.ObtenirProduit(txtCode.Text) != null && txtCode.Text != _produit.Code)
+                {
+                    messageErreur += "- Le code du produit existe déjà.\n";
+                }
+            }
+           
+            if (string.IsNullOrWhiteSpace(txtCode.Text) || txtCode.Text.Length < Produit.CODE_NB_CARAC_MIN || txtCode.Text.Length > Produit.CODE_NB_CARAC_MAX)
+            {
+                messageErreur += $"- Le code du produit doit contenir entre {Produit.CODE_NB_CARAC_MIN} et {Produit.CODE_NB_CARAC_MAX} caracteres.\n";
+            }
+            if (string.IsNullOrWhiteSpace(txtNom.Text) || txtNom.Text.Length < Produit.NOM_NB_CARAC_MIN || txtNom.Text.Length > Produit.NOM_NB_CARAC_MAX)
+            {
+                messageErreur += $"- Le nom du produit doit contenir entre {Produit.CODE_NB_CARAC_MIN} et {Produit.NOM_NB_CARAC_MAX} caracteres.\n";
+            }
+            decimal prix;
+            if (decimal.TryParse(txtPrix.Text, out prix))
+            {
+                if (decimal.Parse(txtPrix.Text) <= 0)
+                {
+                    messageErreur += "- Le prix du produit doit être supérieur à 0.\n";
+                }
+            }
+            else
+            {
+                messageErreur += "- Le prix du produit doit être inscrit en format monetaire.\n";
+            }
+
+            if ((Categorie)cboCategories.SelectedItem == null)
+            {
+                messageErreur += "- Vous devez selectionner la catégorie du  produit.\n";
+            }
+            if (imgProduit.Source == null)
+            {
+                messageErreur += "- Vous devez selectionner l'image du produit.\n";
+            }
+            if (messageErreur == "")
+            {
+                estValide = true;
+            }
+            if (!estValide)
+            {
+                MessageBox.Show(messageErreur, "Validation du produit");
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
     }
