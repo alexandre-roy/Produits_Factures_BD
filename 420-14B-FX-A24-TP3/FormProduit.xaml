@@ -28,7 +28,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label  Content="Catégorie" VerticalAlignment="Bottom"  Width="75" Margin="5"/>
-                    <ComboBox x:Name="cboCategories" Grid.Row="3" Grid.Column="1" Width="275" HorizontalAlignment="Left" Margin="5"/>
+                    <ComboBox x:Name="cboCategoriesP" Grid.Row="3" Grid.Column="1" Width="275" HorizontalAlignment="Left" Margin="5"/>
                 </StackPanel>
               
             </StackPanel>

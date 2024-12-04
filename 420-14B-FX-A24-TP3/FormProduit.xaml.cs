@@ -45,6 +45,8 @@ namespace _420_14B_FX_A24_TP3
             _configuration = new ConfigurationBuilder().AddJsonFile(DAL.APPSETTINGS_FILE, false, true).Build();
 
             InitializeComponent();
+
+            cboCategoriesP.ItemsSource = DAL.ObtenirListeCategories();
         }
 
         #endregion
@@ -66,7 +68,7 @@ namespace _420_14B_FX_A24_TP3
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            cboCategories.ItemsSource = DAL.ObtenirListeCategories();
+            cboCategoriesP.ItemsSource = DAL.ObtenirListeCategories();
 
             if (_etat == EtatFormulaire.Ajouter)
             {
@@ -81,7 +83,7 @@ namespace _420_14B_FX_A24_TP3
                 txtCode.Text = _produit.Code;
                 txtNom.Text = _produit.Nom;
                 txtPrix.Text = _produit.Prix.ToString();
-                cboCategories.SelectedItem = _produit.Categorie;
+                cboCategoriesP.SelectedItem = _produit.Categorie;
                 imgProduit.Source = new BitmapImage(new Uri(_configuration[DAL.IMAGE_PATH] + _produit.Image));
             }
         }
@@ -108,7 +110,7 @@ namespace _420_14B_FX_A24_TP3
                 if (ValiderFormulaire())
                 {
                     image = bi.UriSource.LocalPath;
-                    Produit produit = new Produit(0, txtCode.Text, txtNom.Text, (Categorie)cboCategories.SelectedItem, decimal.Parse(txtPrix.Text), nomImage);
+                    Produit produit = new Produit(0, txtCode.Text, txtNom.Text, (Categorie)cboCategoriesP.SelectedItem, decimal.Parse(txtPrix.Text), nomImage);
 
                     DAL.AjouterProduit(produit);
                     this.DialogResult = true;
@@ -128,7 +130,7 @@ namespace _420_14B_FX_A24_TP3
                     _produit.Code = txtCode.Text;
                     _produit.Nom = txtNom.Text;
                     _produit.Prix = decimal.Parse(txtPrix.Text);
-                    _produit.Categorie = (Categorie)cboCategories.SelectedItem;
+                    _produit.Categorie = (Categorie)cboCategoriesP.SelectedItem;
                     _produit.Image = nomImage;
                     DAL.ModifierProduit(_produit);
 
@@ -197,7 +199,7 @@ namespace _420_14B_FX_A24_TP3
                 messageErreur += "- Le prix du produit doit être inscrit en format monetaire.\n";
             }
 
-            if ((Categorie)cboCategories.SelectedItem == null)
+            if ((Categorie)cboCategoriesP.SelectedItem == null)
             {
                 messageErreur += "- Vous devez selectionner la catégorie du  produit.\n";
             }
