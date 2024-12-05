@@ -47,10 +47,6 @@ namespace _420_14B_FX_TP3_A23.classes
 
             List<Categorie> categories = new List<Categorie>();
 
-            Categorie categorieToutes = new Categorie(0, "Toutes");
-
-            categories.Add(categorieToutes);
-
             try
             {
                 cn.Open();
@@ -99,7 +95,7 @@ namespace _420_14B_FX_TP3_A23.classes
             {
                 cn.Open();
 
-                string requete = $"SELECT Id, Code, Nom, Prix, Image, IdCategorie FROM produits WHERE Code = {code}";
+                string requete = $"SELECT Id, Code, Nom, Prix, Image, IdCategorie FROM produits WHERE Code = '{code}'";
 
                 MySqlCommand cmd = new MySqlCommand(requete, cn);
 
@@ -398,6 +394,14 @@ namespace _420_14B_FX_TP3_A23.classes
             try
             {
                 cn.Open();
+
+                string requeteFacture = "DELETE FROM produitsfactures WHERE IdProduit = @id";
+
+                MySqlCommand comd = new MySqlCommand(requeteFacture, cn);
+
+                comd.Parameters.AddWithValue("@id", produit.Id);
+
+                comd.ExecuteNonQuery();
 
                 string requete = "DELETE FROM produits WHERE Id = @id";
 

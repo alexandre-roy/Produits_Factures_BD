@@ -23,6 +23,8 @@ namespace _420_14B_FX_A24_TP3
     {
         private IConfiguration _configuration;
 
+        private Facture _factureCourante;
+
         #region INITIALISATION
 
         public MainWindow()
@@ -132,8 +134,19 @@ namespace _420_14B_FX_A24_TP3
         #region ACTIONS_FORMULAIRE
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        {            
-            cboCategories.ItemsSource = DAL.ObtenirListeCategories();
+        {
+
+            List<Categorie> categories = new List<Categorie>();
+
+            Categorie categorieToutes = new Categorie(0, "Toutes");
+
+            _factureCourante = new Facture();
+
+            categories.Add(categorieToutes);
+
+            categories.AddRange(DAL.ObtenirListeCategories());
+
+            cboCategories.ItemsSource = categories;
 
             cboCategories.SelectedIndex = 0;
 
@@ -141,6 +154,49 @@ namespace _420_14B_FX_A24_TP3
         }
         
         #endregion
+
+        private void wpProduits_MouseLeftbuttonDown(object sender, MouseButtonEventArgs e)
+        {
+            Image imgProduit = (Image)e.OriginalSource;
+            Produit produit = (Produit)imgProduit.Tag;
+
+            _factureCourante.AjouterProduit(produit, produit.Prix, 1);
+
+
+        }
+
+        private void btnEnlever_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            for (int i = 0; i < _factureCourante.ProduitsFacture.Count; i++)
+            {
+                ProduitFacture pf = _factureCourante.ProduitsFacture[i];
+
+                if (pf.Produit.Equals(e.OriginalSource))
+                {
+                    _factureCourante.ProduitsFacture[i].Quantite--;
+                    if (_factureCourante.ProduitsFacture[i].Quantite == 0)
+                    {
+                        _factureCourante.RetirerProduit(pf.Produit);
+                    }
+                }
+            }
+            
+        }
+
+        private void btnAjouter_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            for (int i = 0; i < _factureCourante.ProduitsFacture.Count; i++)
+            {
+                ProduitFacture pf = _factureCourante.ProduitsFacture[i];
+
+                if (pf.Produit.Equals(e.OriginalSource))
+                {
+                    _factureCourante.ProduitsFacture[i].Quantite++;
+                    
+                }
+            }
+
+        }
 
         private void btnNouveauProduit_Click(object sender, RoutedEventArgs e)
         {
