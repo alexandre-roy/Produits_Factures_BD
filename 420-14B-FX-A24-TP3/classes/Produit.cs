@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace _420_14B_FX_A24_TP3.classes
 {
@@ -7,6 +8,7 @@ namespace _420_14B_FX_A24_TP3.classes
     /// </summary>
     public class Produit
     {
+
         #region CONSTANTES
 
         public const int CODE_NB_CARAC_MAX = 10;

@@ -6,7 +6,7 @@ namespace _420_14B_FX_A24_TP3.classes
     /// <summary>
     /// Classe représentant les produits faisant patie d'une facture
     /// </summary>
-    public class ProduitFacture 
+    public class ProduitFacture
     {
         #region CONSTANTES
 

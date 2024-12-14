@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:_420_14B_FX_A24_TP3"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000" Loaded="Window_Loaded" ResizeMode="NoResize">
-    
+
     <StackPanel Margin="20" Orientation="Horizontal">
         <StackPanel Margin="5">
             <TextBlock Text="Produits" FontWeight="Bold" Foreground="#4169e1" FontSize="20"/>
             <Border Width="500" Height="450" BorderBrush="Black" BorderThickness="1" CornerRadius="5">
-           
+
                 <StackPanel>
-   
+
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Margin="0,0,75,0" x:Name="spAjouterProduit" Orientation="Horizontal" >
                             <Button x:Name="btnNouveauProduit" Background="White" BorderThickness="0" DockPanel.Dock="left" Click="btnNouveauProduit_Click" Margin="2">
@@ -32,13 +32,13 @@
                         <WrapPanel Name="wpProduits" Orientation="Horizontal"></WrapPanel>
                     </ScrollViewer>
                 </StackPanel>
-            
-                 
+
+
 
             </Border>
-            
+
         </StackPanel>
-        
+
         <StackPanel Margin="5">
             <TextBlock Text="Facture" FontWeight="Bold" Foreground="#4169e1" FontSize="20"/>
             <Border Width="420" Height="450" BorderBrush="Black" BorderThickness="1" CornerRadius="5">
@@ -53,17 +53,28 @@
                     </StackPanel>
                     <Border  Height="250" BorderBrush="LightGray" BorderThickness="1" CornerRadius="5" Margin="5">
                         <!--Affichage des items de la facture-->
-                        <StackPanel Orientation="Horizontal" Tag="{Binding Produit.Code}">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{Binding Produit.Nom}" FontSize="18" Margin="5,0,5,20" TextWrapping="Wrap" LineHeight="10" Height="50"/>
-                                <TextBlock Text="{Binding Produit.Code}" FontSize="16" Margin="5"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,5,0">
-                                <Image Height="30" Width="30" HorizontalAlignment="Left" Source="/Resources/minus.png" Margin="0" MouseLeftButtonDown="btnEnlever_MouseLeftButtonDown"/>
-                                <TextBlock Text="{Binding Quantite}" FontSize="16" Margin="5"/>
-                                <Image Height="30" Width="30" HorizontalAlignment="Left" Source="/Resources/plus.png" Margin="0" MouseLeftButtonDown="btnAjouter_MouseLeftButtonDown"/>
-                            </StackPanel>
-                        </StackPanel>
+                        <ListView Name="lstFactures">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Tag="{Binding}">
+                                        <StackPanel Orientation="Horizontal" Width="400" Height="50" VerticalAlignment="Top">
+                                            <StackPanel Orientation="Vertical" Height="42" VerticalAlignment="Top">
+                                                <TextBlock Text="{Binding Produit.Nom, StringFormat=C, ConverterCulture=fr-CA}" FontSize="16" Margin="5,0,5,0" TextWrapping="Wrap" LineHeight="10" Height="26" VerticalAlignment="Top"/>
+                                                <TextBlock Text="{Binding Produit.Code, ConverterCulture=fr-CA, StringFormat=C}" FontSize="10" Margin="5,0,5,0" TextWrapping="Wrap" LineHeight="10" Height="26" VerticalAlignment="Top"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Height="50" VerticalAlignment="Top">
+                                                <Image Height="22" Width="22" VerticalAlignment="Top" HorizontalAlignment="Left" Source="/Resources/minus.png" Margin="0,1,0,0" MouseLeftButtonDown="btnEnlever_MouseLeftButtonDown" />
+                                                <TextBox Text="{Binding Quantite, ConverterCulture=fr-CA, StringFormat='{}{0:0}'}" FontSize="16" Margin="2, 2,2,0" Width="60" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                                                <Image Height="22" Width="22" VerticalAlignment="Top" HorizontalAlignment="Left" Source="/Resources/plus.png" Margin="0,1,0,0" MouseLeftButtonDown="btnAjouter_MouseLeftButtonDown"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Vertical" Height="42" VerticalAlignment="Top">
+                                                <TextBlock Text="{Binding SousTotal, StringFormat='{}{0:C0} CA'}" FontSize="12" Margin="5,0,5,0" TextWrapping="Wrap" LineHeight="10" Height="26" VerticalAlignment="Top"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </Border>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,5,0">

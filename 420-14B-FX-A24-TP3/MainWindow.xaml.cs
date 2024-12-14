@@ -75,6 +75,7 @@ namespace _420_14B_FX_A24_TP3
                 imgProduit.Width = 125;
                 imgProduit.Height = 125;
                 imgProduit.Tag = p;
+                imgProduit.MouseLeftButtonDown += imgProduit_MouseLeftButtonDown;
 
                 TextBlock txtNom = new TextBlock();
                 txtNom.Text = p.Nom;
@@ -155,14 +156,28 @@ namespace _420_14B_FX_A24_TP3
         
         #endregion
 
-        private void wpProduits_MouseLeftbuttonDown(object sender, MouseButtonEventArgs e)
+        private void imgProduit_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Image imgProduit = (Image)e.OriginalSource;
+            Image imgProduit = (Image)sender;
             Produit produit = (Produit)imgProduit.Tag;
-
-            _factureCourante.AjouterProduit(produit, produit.Prix, 1);
-
-
+            bool existe = false;
+            foreach (var prod in _factureCourante.ProduitsFacture)
+            {
+                if (prod.Produit == produit) 
+                {
+                    existe = true;
+                    prod.Quantite += 1;
+                }
+            }
+            if (!existe)
+            {
+                _factureCourante.AjouterProduit(produit, produit.Prix, 1);
+                lstFactures.ItemsSource = _factureCourante.ProduitsFacture;
+            }
+            else
+            {
+                lstFactures.Items.Refresh();
+            }
         }
 
         private void btnEnlever_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
