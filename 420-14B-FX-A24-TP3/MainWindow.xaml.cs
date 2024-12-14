@@ -152,6 +152,10 @@ namespace _420_14B_FX_A24_TP3
             cboCategories.SelectedIndex = 0;
 
             AfficherProduits();
+
+            DataContext = null;
+
+            DataContext = _factureCourante;
         }
         
         #endregion
@@ -174,43 +178,52 @@ namespace _420_14B_FX_A24_TP3
                 _factureCourante.AjouterProduit(produit, produit.Prix, 1);
                 lstFactures.ItemsSource = _factureCourante.ProduitsFacture;
             }
-            else
-            {
-                lstFactures.Items.Refresh();
-            }
+            lstFactures.Items.Refresh();
+            DataContext = null;
+            DataContext = _factureCourante;
         }
 
         private void btnEnlever_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            Image img = e.Source as Image;
+            ProduitFacture prod = img.Tag as ProduitFacture;
             for (int i = 0; i < _factureCourante.ProduitsFacture.Count; i++)
             {
-                ProduitFacture pf = _factureCourante.ProduitsFacture[i];
+                ProduitFacture prodf = _factureCourante.ProduitsFacture[i];
 
-                if (pf.Produit.Equals(e.OriginalSource))
+                if (prodf.Produit.Equals(prod.Produit))
                 {
-                    _factureCourante.ProduitsFacture[i].Quantite--;
-                    if (_factureCourante.ProduitsFacture[i].Quantite == 0)
+                    if (_factureCourante.ProduitsFacture[i].Quantite == 1)
                     {
-                        _factureCourante.RetirerProduit(pf.Produit);
+                        _factureCourante.RetirerProduit(prod.Produit);
                     }
+                    else
+                    {
+                        _factureCourante.ProduitsFacture[i].Quantite -= 1;
+                    }
+                    lstFactures.Items.Refresh();
+                    DataContext = null;
+                    DataContext = _factureCourante;
                 }
             }
-            
         }
 
         private void btnAjouter_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            Image img = e.Source as Image;
+            ProduitFacture prod = img.Tag as ProduitFacture;
             for (int i = 0; i < _factureCourante.ProduitsFacture.Count; i++)
             {
-                ProduitFacture pf = _factureCourante.ProduitsFacture[i];
+                ProduitFacture prodf = _factureCourante.ProduitsFacture[i];
 
-                if (pf.Produit.Equals(e.OriginalSource))
+                if (prodf.Produit.Equals(prod.Produit))
                 {
-                    _factureCourante.ProduitsFacture[i].Quantite++;
-                    
+                    _factureCourante.ProduitsFacture[i].Quantite += 1;
+                    lstFactures.Items.Refresh();
+                    DataContext = null;
+                    DataContext = _factureCourante;
                 }
             }
-
         }
 
         private void btnNouveauProduit_Click(object sender, RoutedEventArgs e)
