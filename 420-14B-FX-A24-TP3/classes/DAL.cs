@@ -486,7 +486,8 @@ namespace _420_14B_FX_TP3_A23.classes
         {
             MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
 
-            Facture facture = null;
+                            Facture facture = null;
+
 
             try
             {
@@ -500,11 +501,39 @@ namespace _420_14B_FX_TP3_A23.classes
 
                 MySqlDataReader dr = cmd.ExecuteReader();
 
+
                 while (dr.Read())
                 {
-                    facture = new Facture(dr.GetUInt32(0), dr.GetDateTime(1));
+                    uint id = dr.GetUInt32(0);
+                    DateTime date = dr.GetDateTime(1);
+                    facture = new Facture(id, date);
                 }
                 dr.Close();
+
+                string requetet = $"SELECT IdFacture, IdProduit, PrixUnitaire, Quantite FROM produitsFactures WHERE IdFacture = @id";
+                MySqlCommand cd = new MySqlCommand(requetet, cn);
+                cd.Parameters.AddWithValue("@id", idFacture);
+                MySqlDataReader dar = cd.ExecuteReader();
+
+                List<ProduitFacture> produitsFacture = new List<ProduitFacture>();
+
+                while (dar.Read())
+                {
+                    uint idProduit = dar.GetUInt32(1);
+                    decimal prixUnitaire = dar.GetDecimal(2);
+                    uint quantite = dar.GetUInt32(3);
+
+                    Produit produit = ObtenirProduit(idProduit);
+
+                    ProduitFacture prodFacture = new ProduitFacture(produit, prixUnitaire, quantite);
+                    produitsFacture.Add(prodFacture);
+                }
+                dar.Close();
+                foreach (var prodFact in produitsFacture)
+                {
+                    facture.AjouterProduit(prodFact.Produit, prodFact.PrixUnitaire, prodFact.Quantite);
+                }
+
             }
             catch
             {

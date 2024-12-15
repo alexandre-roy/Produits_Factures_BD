@@ -277,6 +277,8 @@ namespace _420_14B_FX_A24_TP3
 
         private void btnNouvelleFacture_Click(object sender, RoutedEventArgs e)
         {
+            DAL.AjouterFacture(_factureCourante);
+
             _factureCourante = new Facture();
 
             DataContext = _factureCourante;
@@ -285,5 +287,26 @@ namespace _420_14B_FX_A24_TP3
         }
 
 
+        private void btnPayer_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnRechercherFacture_Click(Object sender, RoutedEventArgs e)
+        {
+            uint numFact = uint.Parse(txtNoFacture.Text);
+
+            Facture fact = DAL.ObtenirFacture(numFact);
+
+            if (fact != null)
+            {
+                _factureCourante = null;
+                _factureCourante = fact;
+                lstFactures.ItemsSource = _factureCourante.ProduitsFacture;
+                lstFactures.Items.Refresh();
+                DataContext = null;
+                DataContext = _factureCourante;
+            }
+        }
     }
 }

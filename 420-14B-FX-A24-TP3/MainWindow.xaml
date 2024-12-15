@@ -46,7 +46,7 @@
                     <TextBlock x:Name="lblDateFacture" Text="Date" HorizontalAlignment="Left" Margin="5" />
                     <StackPanel Orientation="Horizontal" Margin="5">
                         <TextBox  x:Name="txtNoFacture" Width="200" Height="25"/>
-                        <Button x:Name="btnRechercherFacture" BorderThickness="0" Background="White">
+                        <Button x:Name="btnRechercherFacture" BorderThickness="0" Background="White" Click="btnRechercherFacture_Click">
                             <Image  Source="/Resources/search.png"  Width="25" Margin="5"/>
 
                         </Button>
@@ -101,7 +101,7 @@
                 <Button x:Name="btnNouvelleFacture" Background="White" BorderThickness="0" DockPanel.Dock="left" Margin="2" Click="btnNouvelleFacture_Click">
                     <Image Source="/Resources/new.png" Width="25" Margin="5"/>
                 </Button>
-                <Button x:Name="btnPayer"  Content="Payer" Width="50" Background="#4169e1" Foreground="White" HorizontalAlignment="Right" Margin="5" />
+                <Button x:Name="btnPayer"  Content="Payer" Width="50" Background="#4169e1" Foreground="White" HorizontalAlignment="Right" Margin="5" Click="btnPayer_Click" />
             </DockPanel>
         </StackPanel>
     </StackPanel>
