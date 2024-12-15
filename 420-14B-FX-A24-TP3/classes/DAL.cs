@@ -1,9 +1,6 @@
 ﻿using _420_14B_FX_A24_TP3.classes;
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
-using System.Collections.Generic;
-using System.IO;
-using System.Security.Cryptography;
 
 namespace _420_14B_FX_TP3_A23.classes
 {
@@ -11,14 +8,28 @@ namespace _420_14B_FX_TP3_A23.classes
     {
         #region CONSTANTES
 
+        /// <summary>
+        /// Fichier appsettings
+        /// </summary>
         public const string APPSETTINGS_FILE = "appsettings.json";
+
+        /// <summary>
+        /// Chaine de caractères pour la connection
+        /// </summary>
         private const string CONNECTION_STRING = "DefaultConnection";
+
+        /// <summary>
+        /// Chaine de caractères pour le chemin des images
+        /// </summary>
         public const string IMAGE_PATH = "images:path";
 
         #endregion
 
         #region ATTRIBUT
 
+        /// <summary>
+        /// Connection
+        /// </summary>
         private static IConfiguration _configuration;
 
         #endregion

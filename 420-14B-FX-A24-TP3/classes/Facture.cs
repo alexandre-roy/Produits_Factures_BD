@@ -7,7 +7,14 @@
     {
         #region CONSTANTES
 
+        /// <summary>
+        /// Taux du TPS
+        /// </summary>
         public const float TAUX_TPS = 5F;
+
+        /// <summary>
+        /// Taux du TVQ
+        /// </summary>
         public const float TAUX_TVQ = 9.975F;
 
         #endregion

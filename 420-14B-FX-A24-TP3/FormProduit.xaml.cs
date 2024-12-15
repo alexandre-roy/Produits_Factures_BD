@@ -1,19 +1,8 @@
 ﻿using _420_14B_FX_A24_TP3.classes;
 using _420_14B_FX_TP3_A23.classes;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 
@@ -24,19 +13,29 @@ namespace _420_14B_FX_A24_TP3
     /// </summary>
     public partial class FormProduit : Window
     {
-
         private IConfiguration _configuration;
 
         #region ATTRIBUT
 
+        /// <summary>
+        /// L'état du formulaire
+        /// </summary>
         private EtatFormulaire _etat;
 
+        /// <summary>
+        /// Un produit
+        /// </summary>
         private Produit _produit;
 
         #endregion
 
         #region INITIALISATION
 
+        /// <summary>
+        /// Constructeur de FormProduit
+        /// </summary>
+        /// <param name="etat">Etat du formulaire</param>
+        /// <param name="produit">Un produit optionnel</param>
         public FormProduit(EtatFormulaire etat, Produit produit = null)
         {
             _etat = etat;
@@ -52,6 +51,11 @@ namespace _420_14B_FX_A24_TP3
         #endregion
 
         #region MÉTHODES
+
+        /// <summary>
+        /// Permet d'afficher une image
+        /// </summary>
+        /// <param name="cheminFichier">Le chemin ppour l'image</param>
         private void AfficherImage(string cheminFichier)
         {
             BitmapImage bi = new BitmapImage();
@@ -86,9 +90,7 @@ namespace _420_14B_FX_A24_TP3
                 cboCategoriesP.SelectedItem = _produit.Categorie;
                 imgProduit.Source = new BitmapImage(new Uri(_configuration[DAL.IMAGE_PATH] + _produit.Image));
             }
-        }
-
-        #endregion
+        }     
 
         private void btnAjouterModifierSupprimer_Click(object sender, RoutedEventArgs e)
         {
@@ -149,7 +151,7 @@ namespace _420_14B_FX_A24_TP3
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
 
-                openFileDialog.Filter = "image PNG | *.png| image JPG | *.jpg| image AVIF | *.avif";
+                openFileDialog.Filter = "image PNG | *.png| image JPG | *.jpg| image JPEG | *.jpeg";
 
                 if (openFileDialog.ShowDialog() == true)
                 {
@@ -225,5 +227,6 @@ namespace _420_14B_FX_A24_TP3
                 return true;
             }
         }
+        #endregion
     }
 }

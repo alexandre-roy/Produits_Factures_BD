@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-
-namespace _420_14B_FX_A24_TP3.classes
+﻿namespace _420_14B_FX_A24_TP3.classes
 {
     /// <summary>
     /// Classe représentant un produit
@@ -11,10 +8,29 @@ namespace _420_14B_FX_A24_TP3.classes
 
         #region CONSTANTES
 
+        /// <summary>
+        /// Nombre de caractères maximum pour le code
+        /// </summary>
         public const int CODE_NB_CARAC_MAX = 10;
+
+        /// <summary>
+        /// Nombre de caractères minimum pour le code
+        /// </summary>
         public const int CODE_NB_CARAC_MIN = 5;
+
+        /// <summary>
+        /// Nombre de caractères maximum pour le nom
+        /// </summary>
         public const int NOM_NB_CARAC_MAX = 30;
+
+        /// <summary>
+        /// Nombre de caractères minimum pour le nom
+        /// </summary>
         public const int NOM_NB_CARAC_MIN = 3;
+
+        /// <summary>
+        /// Prix minimum
+        /// </summary>
         public const decimal PRIX_MIN_VAL = 0;
 
         #endregion

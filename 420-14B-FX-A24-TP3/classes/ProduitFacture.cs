@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-
-namespace _420_14B_FX_A24_TP3.classes
+﻿namespace _420_14B_FX_A24_TP3.classes
 {
     /// <summary>
     /// Classe représentant les produits faisant patie d'une facture
@@ -10,6 +7,9 @@ namespace _420_14B_FX_A24_TP3.classes
     {
         #region CONSTANTES
 
+        /// <summary>
+        /// Quantité minimale
+        /// </summary>
         public const int QUANTITE_MIN_VAL = 1;
 
         #endregion

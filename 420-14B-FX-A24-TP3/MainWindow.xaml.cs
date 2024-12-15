@@ -1,18 +1,11 @@
 ﻿using _420_14B_FX_A24_TP3.classes;
 using _420_14B_FX_TP3_A23.classes;
 using Microsoft.Extensions.Configuration;
-using System.Configuration;
-using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _420_14B_FX_A24_TP3
 {
@@ -27,6 +20,9 @@ namespace _420_14B_FX_A24_TP3
 
         #region INITIALISATION
 
+        /// <summary>
+        /// Constructeur de mainwindow
+        /// </summary>
         public MainWindow()
         {
             _configuration = new ConfigurationBuilder().AddJsonFile(DAL.APPSETTINGS_FILE, false, true).Build();
@@ -38,6 +34,9 @@ namespace _420_14B_FX_A24_TP3
 
         #region MÉTHODES
 
+        /// <summary>
+        /// Permet d'afficher les produits 
+        /// </summary>
         public void AfficherProduits()
         {
             wpProduits.Children.Clear();
@@ -160,7 +159,7 @@ namespace _420_14B_FX_A24_TP3
             DataContext = _factureCourante;
         }
         
-        #endregion
+        
 
         private void imgProduit_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -266,15 +265,19 @@ namespace _420_14B_FX_A24_TP3
 
         private void btnSupprimer_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Êtes-vous sûr de vouloir supprimer ce produit?", "Supression d'un produit", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            Image imgProduit = (Image)sender;
-            Produit produit = (Produit)imgProduit.Tag;
+            MessageBoxResult efface = MessageBox.Show("Êtes-vous sûr de vouloir supprimer ce produit?", "Supression d'un produit", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-            DAL.SupprimerProduit(produit);
+            if(efface == MessageBoxResult.Yes)
+            {
+                Image imgProduit = (Image)sender;
+                Produit produit = (Produit)imgProduit.Tag;
 
-            MessageBox.Show("Produit supprimé avec succès!", "Suppression d'un produit");
-            
-            AfficherProduits();
+                DAL.SupprimerProduit(produit);
+
+                AfficherProduits();
+
+                MessageBox.Show("Produit supprimé avec succès!", "Suppression d'un produit");
+            }                     
         }
 
         private void btnNouvelleFacture_Click(object sender, RoutedEventArgs e)
@@ -282,6 +285,7 @@ namespace _420_14B_FX_A24_TP3
             lstFactures.IsEnabled = true;
             btnPayer.IsEnabled = true;
             wpProduits.IsEnabled = true;
+            txtNoFacture.Text = "";
 
             _factureCourante = new Facture();
 
@@ -362,5 +366,6 @@ namespace _420_14B_FX_A24_TP3
                 }
             }
         }
+        #endregion
     }
 }
