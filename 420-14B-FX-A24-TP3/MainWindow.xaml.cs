@@ -302,6 +302,7 @@ namespace _420_14B_FX_A24_TP3
                 MessageBox.Show("La facture à été enregistrée avec succès","Enregistrement de la facture");
                 DataContext = null;
                 DataContext = _factureCourante;
+                txtNoFacture.Text = _factureCourante.Id.ToString();
                 lstFactures.IsEnabled = false;
                 btnPayer.IsEnabled = false;
                 wpProduits.IsEnabled = false;

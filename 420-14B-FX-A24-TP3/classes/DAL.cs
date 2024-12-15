@@ -462,6 +462,10 @@ namespace _420_14B_FX_TP3_A23.classes
                 cmd.Parameters.AddWithValue("@montantTotal", facture.MontantTotal);
 
                 cmd.ExecuteNonQuery();
+
+                string requeteId = "SELECT LAST_INSERT_ID();";
+                MySqlCommand cmdId = new MySqlCommand(requeteId, cn);
+                facture.Id = Convert.ToUInt32(cmdId.ExecuteScalar());
             }
             catch
             {
