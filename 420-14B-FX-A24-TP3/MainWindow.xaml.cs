@@ -176,8 +176,8 @@ namespace _420_14B_FX_A24_TP3
             if (!existe)
             {
                 _factureCourante.AjouterProduit(produit, produit.Prix, 1);
-                lstFactures.ItemsSource = _factureCourante.ProduitsFacture;
             }
+            lstFactures.ItemsSource = _factureCourante.ProduitsFacture;
             lstFactures.Items.Refresh();
             DataContext = null;
             DataContext = _factureCourante;
@@ -274,5 +274,16 @@ namespace _420_14B_FX_A24_TP3
             
             AfficherProduits();
         }
+
+        private void btnNouvelleFacture_Click(object sender, RoutedEventArgs e)
+        {
+            _factureCourante = new Facture();
+
+            DataContext = _factureCourante;
+
+            lstFactures.ItemsSource = null;
+        }
+
+
     }
 }

@@ -98,11 +98,10 @@
 
             </Border>
             <DockPanel>
-                <Button x:Name="btnNouvelleFacture" Background="White" BorderThickness="0" DockPanel.Dock="left" Margin="2">
+                <Button x:Name="btnNouvelleFacture" Background="White" BorderThickness="0" DockPanel.Dock="left" Margin="2" Click="btnNouvelleFacture_Click">
                     <Image Source="/Resources/new.png" Width="25" Margin="5"/>
                 </Button>
                 <Button x:Name="btnPayer"  Content="Payer" Width="50" Background="#4169e1" Foreground="White" HorizontalAlignment="Right" Margin="5" />
-
             </DockPanel>
         </StackPanel>
     </StackPanel>
