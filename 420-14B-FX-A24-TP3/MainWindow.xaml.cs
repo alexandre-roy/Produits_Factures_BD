@@ -299,7 +299,7 @@ namespace _420_14B_FX_A24_TP3
             {
                 _factureCourante.DateCreation = DateTime.Now;
                 DAL.AjouterFacture(_factureCourante);
-                MessageBox.Show("La facture a ete enregistree avec succes");
+                MessageBox.Show("La facture à été enregistrée avec succès","Enregistrement de la facture");
                 DataContext = null;
                 DataContext = _factureCourante;
                 lstFactures.IsEnabled = false;
@@ -322,7 +322,7 @@ namespace _420_14B_FX_A24_TP3
             }
             else
             {
-                MessageBox.Show("Le numero de la facture doit etre un nombre entier superieur a 0");
+                MessageBox.Show("Le numéro de la facture doit être un nombre entier supérieur à 0");
                 return;
             }
 
@@ -347,7 +347,7 @@ namespace _420_14B_FX_A24_TP3
         {
             if (_factureCourante != null && _factureCourante.ProduitsFacture.Count > 0)
             {
-                MessageBoxResult resultat = MessageBox.Show("Vous avez une facture non enregistree. Voulez-vous vraiment fermer l'application", "Fermeture de l'application", MessageBoxButton.YesNo);
+                MessageBoxResult resultat = MessageBox.Show("Vous avez une facture non enregistrée d'ouverte. Voulez-vous vraiment fermer l'application et perdre cette facture", "Fermeture de l'application", MessageBoxButton.YesNo);
                 switch (resultat)
                 {
                     case MessageBoxResult.Yes:
