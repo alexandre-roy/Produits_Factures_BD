@@ -466,6 +466,22 @@ namespace _420_14B_FX_TP3_A23.classes
                 string requeteId = "SELECT LAST_INSERT_ID();";
                 MySqlCommand cmdId = new MySqlCommand(requeteId, cn);
                 facture.Id = Convert.ToUInt32(cmdId.ExecuteScalar());
+
+                foreach (var produit in facture.ProduitsFacture)
+                {
+                    string requeteProduit = @"INSERT INTO produitsfactures(IdFacture, IdProduit, PrixUnitaire, Quantite) 
+                                      VALUES(@idFacture, @idProduit, @prixUnitaire, @quantite)";
+
+                    MySqlCommand cmdProduit = new MySqlCommand(requeteProduit, cn);
+
+                    cmdProduit.Parameters.AddWithValue("@idFacture", facture.Id);
+                    cmdProduit.Parameters.AddWithValue("@idProduit", produit.Produit.Id);
+                    cmdProduit.Parameters.AddWithValue("@prixUnitaire", produit.PrixUnitaire);
+                    cmdProduit.Parameters.AddWithValue("@quantite", produit.Quantite);
+
+
+                    cmdProduit.ExecuteNonQuery();
+                }
             }
             catch
             {

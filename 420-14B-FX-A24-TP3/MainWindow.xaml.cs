@@ -348,14 +348,17 @@ namespace _420_14B_FX_A24_TP3
         {
             if (_factureCourante != null && _factureCourante.ProduitsFacture.Count > 0)
             {
-                MessageBoxResult resultat = MessageBox.Show("Vous avez une facture non enregistrée d'ouverte. Voulez-vous vraiment fermer l'application et perdre cette facture", "Fermeture de l'application", MessageBoxButton.YesNo);
-                switch (resultat)
+                if (btnPayer.IsEnabled == true)
                 {
-                    case MessageBoxResult.Yes:
-                        break;
-                    case MessageBoxResult.No:
-                        e.Cancel = true;
-                        break;
+                    MessageBoxResult resultat = MessageBox.Show("Vous avez une facture non enregistrée d'ouverte. Voulez-vous vraiment fermer l'application et perdre cette facture", "Fermeture de l'application", MessageBoxButton.YesNo);
+                    switch (resultat)
+                    {
+                        case MessageBoxResult.Yes:
+                            break;
+                        case MessageBoxResult.No:
+                            e.Cancel = true;
+                            break;
+                    }
                 }
             }
         }
