@@ -43,7 +43,10 @@
             <TextBlock Text="Facture" FontWeight="Bold" Foreground="#4169e1" FontSize="20"/>
             <Border Width="420" Height="450" BorderBrush="Black" BorderThickness="1" CornerRadius="5">
                 <StackPanel Margin="5">
-                    <TextBlock x:Name="lblDateFacture" Text="Date" HorizontalAlignment="Left" Margin="5" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Date" HorizontalAlignment="Left" Margin="5" />
+                        <TextBlock Text="{Binding DateCreation, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}, ConverterCulture=fr-CA}" x:Name="DateBlock" HorizontalAlignment="Left" FontSize="12" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="5">
                         <TextBox  x:Name="txtNoFacture" Width="200" Height="25"/>
                         <Button x:Name="btnRechercherFacture" BorderThickness="0" Background="White" Click="btnRechercherFacture_Click">

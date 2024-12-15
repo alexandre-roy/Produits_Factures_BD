@@ -139,6 +139,10 @@ namespace _420_14B_FX_A24_TP3
             }
         }
 
+        private void btnAnnuler_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = false;
+        }
         private void btnAjouterImage_Click(object sender, RoutedEventArgs e)
         {
             try

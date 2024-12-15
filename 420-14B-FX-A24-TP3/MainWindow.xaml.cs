@@ -155,6 +155,8 @@ namespace _420_14B_FX_A24_TP3
 
             DataContext = null;
 
+            DateBlock.Visibility = Visibility.Collapsed;
+
             DataContext = _factureCourante;
         }
         
@@ -277,24 +279,52 @@ namespace _420_14B_FX_A24_TP3
 
         private void btnNouvelleFacture_Click(object sender, RoutedEventArgs e)
         {
-            DAL.AjouterFacture(_factureCourante);
+            lstFactures.IsEnabled = true;
+            btnPayer.IsEnabled = true;
+            wpProduits.IsEnabled = true;
 
             _factureCourante = new Facture();
 
             DataContext = _factureCourante;
 
             lstFactures.ItemsSource = null;
+
+            DateBlock.Visibility = Visibility.Collapsed;
         }
 
 
         private void btnPayer_Click(object sender, RoutedEventArgs e)
         {
-
+            if (_factureCourante.ProduitsFacture != null)
+            {
+                _factureCourante.DateCreation = DateTime.Now;
+                DAL.AjouterFacture(_factureCourante);
+                MessageBox.Show("La facture a ete enregistree avec succes");
+                DataContext = null;
+                DataContext = _factureCourante;
+                lstFactures.IsEnabled = false;
+                btnPayer.IsEnabled = false;
+                wpProduits.IsEnabled = false;
+                DateBlock.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                MessageBox.Show("La facture doit contenir au moins un produit.", "Enregistrement d'une facture");
+            }
         }
 
         private void btnRechercherFacture_Click(Object sender, RoutedEventArgs e)
         {
-            uint numFact = uint.Parse(txtNoFacture.Text);
+            uint numFact;
+            if(uint.TryParse(txtNoFacture.Text, out numFact))
+            {
+                numFact = uint.Parse(txtNoFacture.Text);
+            }
+            else
+            {
+                MessageBox.Show("Le numero de la facture doit etre un nombre entier superieur a 0");
+                return;
+            }
 
             Facture fact = DAL.ObtenirFacture(numFact);
 
@@ -302,10 +332,14 @@ namespace _420_14B_FX_A24_TP3
             {
                 _factureCourante = null;
                 _factureCourante = fact;
-                lstFactures.ItemsSource = _factureCourante.ProduitsFacture;
-                lstFactures.Items.Refresh();
                 DataContext = null;
                 DataContext = _factureCourante;
+                lstFactures.ItemsSource = _factureCourante.ProduitsFacture;
+                lstFactures.Items.Refresh();
+                lstFactures.IsEnabled = false;
+                btnPayer.IsEnabled = false;
+                wpProduits.IsEnabled = false;
+                DateBlock.Visibility = Visibility.Visible;
             }
         }
     }

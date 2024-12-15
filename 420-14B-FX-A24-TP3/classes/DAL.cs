@@ -486,8 +486,7 @@ namespace _420_14B_FX_TP3_A23.classes
         {
             MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
 
-                            Facture facture = null;
-
+            Facture facture = null;
 
             try
             {
@@ -500,7 +499,6 @@ namespace _420_14B_FX_TP3_A23.classes
                 cmd.Parameters.AddWithValue("@id", idFacture);
 
                 MySqlDataReader dr = cmd.ExecuteReader();
-
 
                 while (dr.Read())
                 {
