@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_420_14B_FX_A24_TP3"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000" Loaded="Window_Loaded" ResizeMode="NoResize">
+        Title="MainWindow" Height="600" Width="1000" Loaded="Window_Loaded" ResizeMode="NoResize" Closing="Window_Closing">
 
     <StackPanel Margin="20" Orientation="Horizontal">
         <StackPanel Margin="5">

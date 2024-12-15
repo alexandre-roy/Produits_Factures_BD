@@ -295,7 +295,7 @@ namespace _420_14B_FX_A24_TP3
 
         private void btnPayer_Click(object sender, RoutedEventArgs e)
         {
-            if (_factureCourante.ProduitsFacture != null)
+            if (_factureCourante.ProduitsFacture.Count > 0)
             {
                 _factureCourante.DateCreation = DateTime.Now;
                 DAL.AjouterFacture(_factureCourante);
@@ -340,6 +340,22 @@ namespace _420_14B_FX_A24_TP3
                 btnPayer.IsEnabled = false;
                 wpProduits.IsEnabled = false;
                 DateBlock.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (_factureCourante != null && _factureCourante.ProduitsFacture.Count > 0)
+            {
+                MessageBoxResult resultat = MessageBox.Show("Vous avez une facture non enregistree. Voulez-vous vraiment fermer l'application", "Fermeture de l'application", MessageBoxButton.YesNo);
+                switch (resultat)
+                {
+                    case MessageBoxResult.Yes:
+                        break;
+                    case MessageBoxResult.No:
+                        e.Cancel = true;
+                        break;
+                }
             }
         }
     }

@@ -484,6 +484,10 @@ namespace _420_14B_FX_TP3_A23.classes
         /// <returns>La facture trouvée. Null si aucune facture n'est trouvée</returns>
         public static Facture ObtenirFacture(uint idFacture)
         {
+            if (idFacture == null)
+            {
+                throw new ArgumentNullException(nameof(idFacture), "L'id de la facture ne doit pas être nulle");
+            }
             MySqlConnection cn = new MySqlConnection(_configuration.GetConnectionString(CONNECTION_STRING));
 
             Facture facture = null;
